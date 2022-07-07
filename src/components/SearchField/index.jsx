@@ -9,8 +9,8 @@ export default function SearchInput({placeholder, options}) {
                 options ? 
                     <SearchSelectStyle>
                         {
-                            Array.isArray(options) && options.map(({valor, texto}) => (
-                                <option value={valor}>{texto}</option>
+                            Array.isArray(options) && options.map(({valor, texto}, index) => (
+                                <option key={index} value={valor}>{texto}</option>
                             ))
                         }
                     </SearchSelectStyle> :
