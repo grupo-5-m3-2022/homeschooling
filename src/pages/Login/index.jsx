@@ -8,7 +8,6 @@ import {
   InputContainer,
   LinkStyle,
 } from "../../components/Form/style";
-import { GlobalStyle } from "../../style/global";
 
 import { AiOutlineMail, AiFillLock } from "react-icons/ai";
 import { useForm } from "react-hook-form";
@@ -36,7 +35,6 @@ export default function Login() {
 
   return (
     <>
-      <GlobalStyle />
 
       <Container>
         <FormContainer>
