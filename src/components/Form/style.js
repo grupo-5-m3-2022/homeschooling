@@ -64,6 +64,13 @@ export const Content = styled.div`
       flex-direction: column;
       align-items: center;
       gap: 11px;
+
+      span {
+        font-weight: 500;
+        color: #fa4b00;
+
+        align-self: flex-start;
+      }
     }
   }
 
