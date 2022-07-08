@@ -1,18 +1,17 @@
-import { useState } from "react"
 import { FiSettings, FiClipboard } from "react-icons/fi"
 import { AiOutlineInfoCircle } from "react-icons/ai"
 import { HiCubeTransparent } from "react-icons/hi"
 import { DashboardContainer } from "./styles"
 import SideBar from "../../components/SideBar"
 import Lessons from "../../components/Lessons"
-import Performance from "../../components/Performance"
+import Performance from "../../components/Grade"
 import Help from "../../components/Help"
 import Settings from "../../components/Settings"
 import Header from "../../components/Header"
+import { useDashboardStates } from "../../routes"
 
 export default function Dashboard() {
-    const [selected, setSelected] = useState("aulas");
-    const [showSideBar, setShowSideBar] = useState(false)
+    const { selected } = useDashboardStates()
 
     return (
         <DashboardContainer>
@@ -20,10 +19,10 @@ export default function Dashboard() {
                 <SideBar asideFunctions={[
                     ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
                     ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
-                ]} open={selected} setOpen={setSelected} show={showSideBar} setShow={setShowSideBar}/>
+                ]}/>
             }
             <div className="dashboard-content">
-                <Header setShowSideBar={setShowSideBar}/>
+                <Header/>
                 <main>
                     {
                         selected === 'aulas' ?
@@ -35,7 +34,7 @@ export default function Dashboard() {
                         selected === 'ajuda' ?
                             <Help /> :
                             null
-                    }                    
+                    }
                 </main>
             </div>
 

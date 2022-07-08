@@ -40,6 +40,7 @@ export const LessonsContentDiv = styled.div`
         gap: 5px;
         width: 230px;
         border-radius: 10px;
+        cursor: pointer;
 
         svg {
             width: 40px;
