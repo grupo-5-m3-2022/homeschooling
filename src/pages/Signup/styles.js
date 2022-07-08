@@ -52,6 +52,7 @@ export const Content = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
+        gap: 10px;
         width: 300px;
         height: 80%;
 
@@ -89,19 +90,25 @@ export const InputContainer = styled.div`
     border-radius: 50px;
     width: 90%;
     height: 50px;
-    margin-bottom: 10px;
     margin-left: 15px;
     display: flex;
-    justify-content: center;
     align-items: center;
     color: #666666;
-    gap: 5px;
-    padding: 0 15px;
+    position: relative;
+
+    svg {
+        position: absolute;
+        left: 5%;
+        pointer-events: none;
+    }
 
     input {
+        width: 100%;
+        border-radius: 50px;
+        height: 100%;
         border: none;
         background-color: #E6E6E6;
-        width: 90%;
         font-weight: 600;
+        padding: 0 20px 0 15%;
     }
 `
