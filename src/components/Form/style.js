@@ -114,6 +114,7 @@ export const LinkStyle = styled(Link)`
 export const InputContainer = styled.div`
   width: 100%;
   height: 56px;
+  position: relative;
 
   background-color: #e6e6e6;
 
@@ -122,13 +123,22 @@ export const InputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14.5px;
 
-  padding-left: 23.95px;
+  svg {
+    position: absolute;
+    left: 20%;
+
+    pointer-events: none;
+  }
 
   input {
-    background: transparent;
+    width: 100%;
+    height: 100%;
 
+    background: transparent;
+    padding: 14px 24px 14px 35%;
+
+    border-radius: 50px;
     border: 0;
 
     &::placeholder {
@@ -136,12 +146,6 @@ export const InputContainer = styled.div`
       font-weight: 500;
       color: #666666;
     }
-  }
-
-  @media (min-width: 425px) {
-    gap: 17px;
-
-    padding-left: 28px;
   }
 `;
 
