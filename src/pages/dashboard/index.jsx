@@ -4,7 +4,7 @@ import { HiCubeTransparent } from "react-icons/hi"
 import { DashboardContainer } from "./styles"
 import SideBar from "../../components/SideBar"
 import Lessons from "../../components/Lessons"
-import Performance from "../../components/Performance"
+import Performance from "../../components/Grade"
 import Help from "../../components/Help"
 import Settings from "../../components/Settings"
 import Header from "../../components/Header"
@@ -34,7 +34,7 @@ export default function Dashboard() {
                         selected === 'ajuda' ?
                             <Help /> :
                             null
-                    }                    
+                    }
                 </main>
             </div>
 

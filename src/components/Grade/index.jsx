@@ -1,10 +1,9 @@
-import { Btn, ContainerGrade, ContainerInfos, GradesTable, HeaderTable, MediaGrades } from "./style"
-import GradeCard from "../../components/GradeCard"
+import { ContainerGrade, ContainerInfos, HeaderTable, GradesTable, MediaGrades, Btn } from "./styles"
+import GradeCard from "../GradeCard"
 
 
-function Grade({name, ano}){
-
-    return(
+export default function Performance({name, ano}) {
+    return (
         <ContainerGrade>
             <ContainerInfos>
                 <h3>6 ano Ensino Fundamental{ano}</h3>
@@ -37,7 +36,6 @@ function Grade({name, ano}){
             </GradesTable>
 
         </ContainerGrade>
+
     )
 }
-
-export default Grade

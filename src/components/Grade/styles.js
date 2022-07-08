@@ -6,12 +6,7 @@ export const ContainerGrade = styled.div`
     min-height: 100%;
     display: flex;
     flex-direction: column;
-
-    margin-left: 100px;
-    margin-top: 80px ;
-    padding: 0 40px;
-    padding-top: 50px;
-
+    padding: 32px 54px;
     background-color: #F0F7FD;
 `
 
@@ -24,7 +19,6 @@ export const ContainerInfos = styled.div`
         color: black;
         margin-bottom: 10px;
     }
-
     p{
         color: gray;
         font-size: 14px;
@@ -33,7 +27,6 @@ export const ContainerInfos = styled.div`
 `
 
 export const GradesTable = styled.div`
-    width: 90%;
     height: auto;
     min-height: 400px;
     display: flex;
@@ -43,12 +36,10 @@ export const GradesTable = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     div{
         width: 100%;
         
     }
-
 `
 
 export const HeaderTable = styled.div`
