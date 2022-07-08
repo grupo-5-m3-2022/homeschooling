@@ -84,7 +84,7 @@ export default function SignUp() {
                             {inputPosition === "0" && 
                         <InputContainer>
                             <AiOutlineInfoCircle />
-                            <select name='ano' {...register("ano")}>
+                                <select name='ano' {...register("ano")}>
                                     <option selected disabled defaultValue="">Selecione seu ano</option>
                                     <option value="1º Ano EF 1">1º Ano EF 1</option>
                                     <option value="2º Ano EF 1">2º Ano EF 1</option>
@@ -97,7 +97,6 @@ export default function SignUp() {
                                     <option value="1º Ano EM">1º Ano EM</option>
                                     <option value="2º Ano EM">2º Ano EM</option>
                                     <option value="3º Ano EM">3º Ano EM</option>
-                                    <option value="3º Ano EM">Não sou estudante</option>
                                 </select>
                         </InputContainer>
                             }
