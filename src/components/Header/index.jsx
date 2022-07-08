@@ -2,8 +2,11 @@ import { BiBell } from "react-icons/bi"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { AiOutlineUser } from "react-icons/ai"
 import { HeaderStyle } from "./styles"
+import { useDashboardStates } from "../../routes"
 
-export default function Header({setShowSideBar}) {
+export default function Header() {
+    const { setShowSideBar } = useDashboardStates()
+
     return (
         <HeaderStyle>
             <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(actual => !actual)}} className="sidebar-switch" />

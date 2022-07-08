@@ -1,13 +1,18 @@
 import { Aside, AsideFunction } from "./styles"
 import { BiLoaderCircle } from "react-icons/bi"
 import { GiHamburgerMenu } from "react-icons/gi"
+import { useDashboardStates } from "../../routes"
+import { useHistory } from "react-router-dom"
 
-export default function SideBar({asideFunctions, open, setOpen, show, setShow}) {
+export default function SideBar({asideFunctions}) {
+    const { selected, setSelected, showSideBar, setShowSideBar } = useDashboardStates()
+    const history = useHistory()
+
     return (
         <>
-            <Aside show={show}>
+            <Aside show={showSideBar}>
                 <div className="aside-title">
-                    <GiHamburgerMenu onClick={() => {setShow(false)}} className="sidebar-switch" />
+                    <GiHamburgerMenu onClick={() => {setShowSideBar(false)}} className="sidebar-switch" />
                     <BiLoaderCircle />
                     <h1>Home School</h1>
                 </div>
@@ -20,7 +25,7 @@ export default function SideBar({asideFunctions, open, setOpen, show, setShow}) 
                                 </li>
                                 {
                                     abas?.map(([Icon, name], index) => (
-                                        <AsideFunction key={index} onClick={() => {setOpen(name.toLowerCase())}} selected={open === name.toLowerCase()}>
+                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
                                             {
                                                 Icon && <Icon />}
                                             {name}
