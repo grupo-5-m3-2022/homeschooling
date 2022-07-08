@@ -6,15 +6,19 @@ import {
   FormContainer,
   Image,
   InputContainer,
-  LinkStyle,
 } from "../../components/Form/style";
+import api from "../../services/api";
 
 import { AiOutlineMail, AiFillLock } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toast } from "react-toastify";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
+  const history = useHistory();
+
   const schema = yup.object({
     email: yup.string().required("Campo obrigatório").email("Email inválido"),
     password: yup
@@ -30,12 +34,23 @@ export default function Login() {
   } = useForm({ resolver: yupResolver(schema) });
 
   function login(data) {
-    console.log(data);
+    api
+      .post("login", data)
+      .then((response) => {
+        localStorage.setItem("@token", response.data.accessToken);
+        localStorage.setItem("@userId", response.data.user.id);
+
+        toast.success("Login efetuado com sucesso!");
+
+        return history.push("/dashboard");
+      })
+      .catch(() => {
+        toast.error("Algo deu errado!")
+      });
   }
 
   return (
     <>
-
       <Container>
         <FormContainer>
           <Content>
@@ -71,11 +86,9 @@ export default function Login() {
                   ENTRAR
                 </Button>
 
-                <ButtonLink to="/signUp">
+                <ButtonLink to="/signup">
                   <Button color="#57b846">CADASTRAR</Button>
                 </ButtonLink>
-
-                <LinkStyle to="/">Esqueceu sua senha?</LinkStyle>
               </div>
             </form>
           </Content>

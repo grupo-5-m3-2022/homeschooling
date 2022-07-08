@@ -6,10 +6,11 @@ import FormImage from "../../assets/form-user.svg";
 export const Container = styled.div`
   min-height: 100vh;
 
+  background: rgb(242, 205, 251);
   background: linear-gradient(
-    180deg,
-    rgba(0, 117, 255, 0.48) 0%,
-    rgba(242, 205, 251, 0.58) 70.84%
+    0deg,
+    rgba(242, 205, 251, 1) 0%,
+    rgba(0, 117, 255, 1) 100%
   );
 
   display: flex;
@@ -101,14 +102,6 @@ export const Button = styled.button`
 
 export const ButtonLink = styled(Link)`
   width: 100%;
-`;
-
-export const LinkStyle = styled(Link)`
-  font-size: 16px;
-  font-weight: 500;
-  color: #666666;
-
-  text-decoration: none;
 `;
 
 export const InputContainer = styled.div`
