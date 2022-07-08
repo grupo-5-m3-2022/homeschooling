@@ -4,9 +4,11 @@ import { LessonsContentDiv } from "./styles";
 import { useHistory } from "react-router-dom";
 import material from "../../services/material";
 import { useState } from "react";
+import { useDashboardStates } from "../../routes";
 
 export default function Lessons() {
     const history = useHistory();
+    const { setSelected } = useDashboardStates()
     const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
     const [subject, setSubject] = useState(allSubjects[0]);
 
@@ -22,7 +24,7 @@ export default function Lessons() {
                     {
                         material[0].bimesters.map((bimester, index) => (
                             Object.keys(...bimester.subejects).includes(subject) && <li key={index}>
-                                <div className="lessons-card">
+                                <div className="lessons-card" onClick={() => {setSelected("bimester"); history.push(`/dashboard/${subject}?bimester=${bimester.bimester}`)}}>
                                     <GrTemplate />
                                     <div>
                                         <h3>Bimestre {bimester.bimester}</h3>
