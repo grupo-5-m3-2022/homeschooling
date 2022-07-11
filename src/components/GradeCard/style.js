@@ -15,6 +15,29 @@ export const ContainerCard = styled.div`
     span{
         color: black;
         font-size: 14px;
+        width: 25%;
+    }
+    .score{
+        width: 12.5%;
     }
 
+    @media (max-width: 900px) {
+        .date{
+            display: none;
+        }
+        
+    }
+    @media (max-width: 570px) {
+        .max{
+            display: none;
+        }    
+    }
+    @media (max-width: 530px) {
+        .subject{
+            display: none;
+        }   
+        .name{
+            width: 87.5%;
+        }  
+    }
 `

@@ -44,7 +44,16 @@ export const GlobalStyle = createGlobalStyle`
     line-height: 1;
   }
 
+  a {
+    text-decoration: none;
+  }
+
   ol, ul, li {
     list-style: none;
+  }
+
+  textarea:focus, input:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
   }
 `;
