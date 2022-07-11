@@ -1,4 +1,4 @@
-import { useParams, useLocation, useHistory } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { FiClipboard, FiSettings } from "react-icons/fi";
 import { HiCubeTransparent } from "react-icons/hi";
 import { AiOutlineInfoCircle } from "react-icons/ai";
@@ -9,11 +9,12 @@ import { GrDocumentText } from "react-icons/gr"
 import material from "../../services/material";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
+import { useDashboardStates } from "../../routes";
 
 export default function Bimester() {
-    const { subject } = useParams()
-    const { search } = useLocation()
-    const bimester = new URLSearchParams(search).get('bimester')
+    const { setSelected } = useDashboardStates()
+    const history = useHistory()
+    const { subject, bimester } = useParams()
 
     return (
         <DashboardContainer>
@@ -30,13 +31,13 @@ export default function Bimester() {
                         <div className="bimester-title">
                             <h2>8° Ano do Ensino Fundamental</h2>
                             <h3>Bem vindo, Tales!</h3>
-                            </div>
+                        </div>
                         <div className="bimester-navegation">
-                            <button>
+                            <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>
                                 <RiArrowLeftSLine />
                                 Voltar
                             </button>
-                            <button>{subject}</button>
+                            <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>{subject}</button>
                             <button>Bimestre {bimester}</button>
                         </div>
 
@@ -47,9 +48,9 @@ export default function Bimester() {
                                         bimesterMaterial.bimester === Number(bimester) ? 
                                             bimesterMaterial.subejects[0][subject].map((lessons, index) => (
                                                 <li key={index}>
-                                                    <div>
+                                                    <div onClick={() => history.push(`/dashboard/${subject}/${bimester}/${index}`)}>
                                                         <GrDocumentText />
-                                                        <h3>{lessons.title}</h3>
+                                                        <h3>{lessons.title.split(' ').length > 8 ? lessons.title.split(' ').slice(0, 8).join(' ') + '...' : lessons.title}</h3>
                                                     </div>
                                                 </li>
                                             )) : 

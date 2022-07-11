@@ -1,12 +1,12 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
-export const BimesterContent = styled.div`
+export const ArticleContent = styled.div`
     padding: 32px 54px;
     display: flex;
     flex-direction: column;
     gap: 35px;
 
-    .bimester-title {
+    .article-title {
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -21,9 +21,8 @@ export const BimesterContent = styled.div`
             color: #6B758A;
         }
     }
-
-
-    .bimester-navegation {
+    
+    .article-navegation {
         width: max-content;
 
         display: flex;
@@ -48,25 +47,35 @@ export const BimesterContent = styled.div`
         }
     }
 
-    .bimester-content {
-
-        ul {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-        }
+    .article-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-size: 14px;
 
         div {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            padding: 20px 30px;
-            background-color: white;
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
 
-            h3 {
+    @media (max-width: 800px) {
+        padding: 25px 20px;
+
+        .article-navegation {
+            button {
+                font-size: 12px;
+            }
+        }
+
+        .article-content {
+            font-size: 12px;
+
+            h1 {
                 font-size: 14px;
-                font-weight: 700;
             }
         }
     }
+
 `

@@ -62,6 +62,7 @@ export const BimesterContent = styled.div`
             gap: 15px;
             padding: 20px 30px;
             background-color: white;
+            cursor: pointer;
 
             h3 {
                 font-size: 14px;
@@ -69,4 +70,31 @@ export const BimesterContent = styled.div`
             }
         }
     }
+
+    @media (max-width: 800px) {
+        padding: 25px 20px;
+
+        .bimester-navegation {
+            button {
+                font-size: 12px;
+            }
+        }
+
+        .bimester-content {
+
+            div {
+
+                h3 {
+                    font-size: 12px;
+                    font-weight: 700;
+                }
+
+                svg {
+                    min-width: 15px;
+                    min-height: 15px;
+                }
+            }
+        }
+    }
+
 `
