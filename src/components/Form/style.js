@@ -6,10 +6,11 @@ import FormImage from "../../assets/form-user.svg";
 export const Container = styled.div`
   min-height: 100vh;
 
+  background: rgb(242, 205, 251);
   background: linear-gradient(
-    180deg,
-    rgba(0, 117, 255, 0.48) 0%,
-    rgba(242, 205, 251, 0.58) 70.84%
+    0deg,
+    rgba(242, 205, 251, 1) 0%,
+    rgba(0, 117, 255, 1) 100%
   );
 
   display: flex;
@@ -103,17 +104,10 @@ export const ButtonLink = styled(Link)`
   width: 100%;
 `;
 
-export const LinkStyle = styled(Link)`
-  font-size: 16px;
-  font-weight: 500;
-  color: #666666;
-
-  text-decoration: none;
-`;
-
 export const InputContainer = styled.div`
   width: 100%;
   height: 56px;
+  position: relative;
 
   background-color: #e6e6e6;
 
@@ -122,13 +116,22 @@ export const InputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 14.5px;
 
-  padding-left: 23.95px;
+  svg {
+    position: absolute;
+    left: 20%;
+
+    pointer-events: none;
+  }
 
   input {
-    background: transparent;
+    width: 100%;
+    height: 100%;
 
+    background: transparent;
+    padding: 14px 24px 14px 35%;
+
+    border-radius: 50px;
     border: 0;
 
     &::placeholder {
@@ -136,12 +139,6 @@ export const InputContainer = styled.div`
       font-weight: 500;
       color: #666666;
     }
-  }
-
-  @media (min-width: 425px) {
-    gap: 17px;
-
-    padding-left: 28px;
   }
 `;
 

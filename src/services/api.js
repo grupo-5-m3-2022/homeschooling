@@ -1,7 +1,7 @@
-import axios from "axios"
+import axios from "axios";
 
 const api = axios.create({
-    baseURL: "https://json-server-home-schooling.herokuapp.com/"
-})
+  baseURL: "https://json-server-home-schooling.herokuapp.com/",
+});
 
-export default api
+export default api;
