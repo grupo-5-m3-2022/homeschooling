@@ -1,7 +1,7 @@
 import { Aside, AsideFunction } from "./styles"
 import { BiLoaderCircle } from "react-icons/bi"
 import { GiHamburgerMenu } from "react-icons/gi"
-import { useDashboardStates } from "../../routes"
+import { useDashboardStates } from "../Providers"
 import { useHistory } from "react-router-dom"
 
 export default function SideBar({asideFunctions}) {

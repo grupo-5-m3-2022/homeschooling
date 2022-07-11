@@ -5,6 +5,7 @@ export const BimesterContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 35px;
+    animation: appear 500ms;
 
     .bimester-title {
         display: flex;
@@ -62,11 +63,47 @@ export const BimesterContent = styled.div`
             gap: 15px;
             padding: 20px 30px;
             background-color: white;
+            cursor: pointer;
 
             h3 {
                 font-size: 14px;
                 font-weight: 700;
             }
+        }
+    }
+
+    @media (max-width: 800px) {
+        padding: 25px 20px;
+
+        .bimester-navegation {
+            button {
+                font-size: 12px;
+            }
+        }
+
+        .bimester-content {
+
+            div {
+
+                h3 {
+                    font-size: 12px;
+                    font-weight: 700;
+                }
+
+                svg {
+                    min-width: 15px;
+                    min-height: 15px;
+                }
+            }
+        }
+    }
+
+    @keyframes appear {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0);
         }
     }
 `

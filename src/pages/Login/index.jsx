@@ -8,16 +8,17 @@ import {
   InputContainer,
 } from "../../components/Form/style";
 import api from "../../services/api";
-
 import { AiOutlineMail, AiFillLock } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
+import { useUserStates } from "../../components/Providers";
 
 export default function Login() {
   const history = useHistory();
+  const {setUser} = useUserStates()
 
   const schema = yup.object({
     email: yup.string().required("Campo obrigatório").email("Email inválido"),
@@ -39,6 +40,8 @@ export default function Login() {
       .then((response) => {
         localStorage.setItem("@token", response.data.accessToken);
         localStorage.setItem("@userId", response.data.user.id);
+        setUser(response.data.user)
+        console.log(response.data.user)
 
         toast.success("Login efetuado com sucesso!");
 
