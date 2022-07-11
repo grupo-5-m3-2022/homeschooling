@@ -4,7 +4,6 @@ import SignupImage from '../../assets/signup.svg'
 export const Background = styled.div`
     width: 100%;
     height: 100vh;
-    background: rgb(242,205,251);
     background: linear-gradient(0deg, rgba(242,205,251,1) 0%, rgba(0,117,255,1) 100%);
     display: flex;
     align-items: center;
@@ -74,11 +73,19 @@ export const Content = styled.div`
             color: #FFFFFF;
             font-weight: 600;
         }
+
         p {
             display: flex;
             justify-content: center;
             color: #666666;
             font-size: 12px;
+            margin-top: 5px;
+        }
+        
+        span {
+            margin-left: 25px;
+            font-size: 12px;
+            color: red;
         }
     }
 `
@@ -110,5 +117,16 @@ export const InputContainer = styled.div`
         background-color: #E6E6E6;
         font-weight: 600;
         padding: 0 20px 0 15%;
+    }
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #E6E6E6 inset;
+    }  
+
+    select {
+        border: none;
+        background: #E6E6E6;
+        width: 90%;
+        color: #666666;
+        font-weight: 600;
     }
 `
