@@ -2,28 +2,13 @@ import { ContainerGrade, ContainerInfos, HeaderTable, GradesTable, MediaGrades, 
 import GradeCard from "../GradeCard"
 import { useEffect, useState } from "react"
 import api from "../../services/api"
+import { useUserStates } from "../Providers"
 
 
-export default function Performance() {
+export default function Grade() {
     const [grades, setGrades] = useState([])
     const [token] = useState(localStorage.getItem("@token") || "")
-    const [userId] = useState(localStorage.getItem("@userId") || "")
-    const [userEmail, setUserEmail] = useState("")
-    const [userName, setUserName] = useState("")
-    const [userAno, setUserAno] = useState("")
-
-    function loadUserInfos(){
-        api.get(`users/${userId}`,{
-            headers:{
-                Authorization: `Bearer ${token}`
-            }
-        })
-        .then((response) => {
-            setUserEmail(response.data.email)
-            setUserName(response.data.name)
-            setUserAno(response.data.ano)
-        })
-    }
+    const { user } = useUserStates()
 
     function loadGrades(){
         api.get("/grades",{
@@ -31,14 +16,13 @@ export default function Performance() {
                 Authorization: `Bearer ${token}`
             },
             params: {
-                studentEmail: userEmail
+                studentEmail: user.email
             }
         })
         .then((response)=> setGrades(response.data))
     }
     
     useEffect(() => {
-        loadUserInfos()
         loadGrades()
     }, [grades])
 
@@ -49,9 +33,8 @@ export default function Performance() {
     return (
         <ContainerGrade>
             <ContainerInfos>
-                <h3>{userAno}</h3>
-                <p>Bem vindo, {userName}</p>
-            <Btn>&lt; Voltar </Btn>
+                <h3>{user.ano}</h3>
+                <p>Bem vindo, {user.name}</p>
             </ContainerInfos>
             <GradesTable>
             <div>
@@ -81,6 +64,5 @@ export default function Performance() {
             </GradesTable>
 
         </ContainerGrade>
-
     )
 }

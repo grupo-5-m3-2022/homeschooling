@@ -41,6 +41,7 @@ export default function Login() {
         localStorage.setItem("@token", response.data.accessToken);
         localStorage.setItem("@userId", response.data.user.id);
         setUser(response.data.user)
+        console.log(response.data.user)
 
         toast.success("Login efetuado com sucesso!");
 

@@ -8,8 +8,6 @@ export default function Header() {
     const { setShowSideBar } = useDashboardStates()
     const { user } = useUserStates()
 
-    console.log(user)
-
     return (
         <HeaderStyle>
             <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(actual => !actual)}} className="sidebar-switch" />
@@ -19,7 +17,7 @@ export default function Header() {
                     <AiOutlineUser />
                     <div>
                         <h3>{user?.name?.split(' ').slice(0, 2).join(' ')}</h3>
-                        <h4>{user?.role}</h4>
+                        <h4>{user?.position}</h4>
                     </div>
                 </div>
             </div>
