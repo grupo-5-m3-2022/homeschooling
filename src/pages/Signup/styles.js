@@ -118,14 +118,22 @@ export const InputContainer = styled.div`
         font-weight: 600;
         padding: 0 20px 0 15%;
     }
+
+    input:focus {
+        outline: 2px solid black;
+    }
+
     input:-webkit-autofill {
         box-shadow: 0 0 0px 1000px #E6E6E6 inset;
     }  
 
     select {
+        border-radius: 50px;
+        height: 100%;
+        padding: 0 20px 0 15%;
+        width: 100%;
         border: none;
         background: #E6E6E6;
-        width: 90%;
         color: #666666;
         font-weight: 600;
     }

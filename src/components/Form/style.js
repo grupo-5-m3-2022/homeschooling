@@ -139,6 +139,10 @@ export const InputContainer = styled.div`
       font-weight: 500;
       color: #666666;
     }
+
+    &:focus {
+        outline: 2px solid black;
+    }
   }
 `;
 
