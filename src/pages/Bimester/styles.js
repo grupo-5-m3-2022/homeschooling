@@ -5,6 +5,7 @@ export const BimesterContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 35px;
+    animation: appear 500ms;
 
     .bimester-title {
         display: flex;
@@ -97,4 +98,12 @@ export const BimesterContent = styled.div`
         }
     }
 
+    @keyframes appear {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
 `

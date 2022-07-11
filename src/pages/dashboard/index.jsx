@@ -8,7 +8,8 @@ import Performance from "../../components/Grade"
 import Help from "../../components/Help"
 import Settings from "../../components/Settings"
 import Header from "../../components/Header"
-import { useDashboardStates } from "../../routes"
+import { useDashboardStates } from "../../components/Providers"
+
 
 export default function Dashboard() {
     const { selected } = useDashboardStates()
@@ -33,7 +34,7 @@ export default function Dashboard() {
                             <Settings /> :
                         selected === 'ajuda' ?
                             <Help /> :
-                            null
+                        null
                     }
                 </main>
             </div>

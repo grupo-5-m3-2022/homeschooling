@@ -2,7 +2,7 @@ import { BiBell } from "react-icons/bi"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { AiOutlineUser } from "react-icons/ai"
 import { HeaderStyle } from "./styles"
-import { useDashboardStates, useUserStates } from "../../routes"
+import { useDashboardStates, useUserStates } from "../Providers"
 
 export default function Header() {
     const { setShowSideBar } = useDashboardStates()

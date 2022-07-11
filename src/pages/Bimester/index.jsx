@@ -9,7 +9,7 @@ import { GrDocumentText } from "react-icons/gr"
 import material from "../../services/material";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
-import { useDashboardStates } from "../../routes";
+import { useDashboardStates } from "../../components/Providers";
 
 export default function Bimester() {
     const { setSelected } = useDashboardStates()
@@ -62,7 +62,6 @@ export default function Bimester() {
                     </BimesterContent>
                 </main>
             </div>
-
        </DashboardContainer>
     )
 }

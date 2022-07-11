@@ -6,6 +6,7 @@ export const LessonsContentDiv = styled.div`
     flex-direction: column;
     flex-grow: 1;
     gap: 36px;
+    animation: ${props => props.animation === 'go' ? "appearRight" : "appearLeft"} 500ms;
 
     @media (max-width: 800px) {
         padding: 25px 20px;
@@ -58,6 +59,24 @@ export const LessonsContentDiv = styled.div`
             font-size: 12px;
             font-weight: 400;
             color: #6B758A;
+        }
+    }
+
+    @keyframes appearRight {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes appearLeft {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(0);
         }
     }
 `

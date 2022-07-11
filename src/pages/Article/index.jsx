@@ -7,7 +7,7 @@ import { DashboardContainer } from "../dashboard/styles";
 import material from "../../services/material";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
-import { useDashboardStates } from "../../routes";
+import { useDashboardStates } from "../../components/Providers";
 import { ArticleContent } from "./styles";
 
 export default function Article() {

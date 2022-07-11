@@ -4,17 +4,18 @@ import { LessonsContentDiv } from "./styles";
 import { useHistory } from "react-router-dom";
 import material from "../../services/material";
 import { useState } from "react";
-import { useDashboardStates, useUserStates } from "../../routes";
+import { useDashboardStates, useUserStates, useAnimationStates } from "../Providers";
 
 export default function Lessons() {
     const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
     const history = useHistory();
     const { setSelected } = useDashboardStates()
-    const {user} = useUserStates()
+    const { user } = useUserStates()
+    const { lessonsAnimation } = useAnimationStates()
     const [subject, setSubject] = useState(allSubjects[0]);
 
     return (
-        <LessonsContentDiv>
+        <LessonsContentDiv animation={lessonsAnimation}>
             <div className="lessons-title">
                 <h2>{user?.year}</h2>
                 <h3>Bem vindo, {user?.name?.split(' ').slice(0, 1).join("")}!</h3>
