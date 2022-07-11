@@ -6,7 +6,7 @@ const material = [
         bimester: 1,
         subejects: [
           {
-            história: [
+            História: [
               {
                 lesson: 1,
                 title: "As origens da humanidade, seus deslocamentos e os processos de sedentarização",
@@ -26,7 +26,7 @@ const material = [
                 link:"https://youtu.be/0ZjuTWeOFhc"
               }
             ],
-            português: [
+            Português: [
               {
                 lesson: 1,
                 title: "Variação linguística",
@@ -46,7 +46,7 @@ const material = [
                 link: "https://youtu.be/0TBtObLhKVE"
               }
             ],
-            ciências: [
+            Ciências: [
               {
                 lesson: 1,
                 title: "Propriedades físicas e químicas dos materiais",
@@ -73,7 +73,7 @@ const material = [
         bimester: 2,
         subejects: [
           {
-            história: [
+            História: [
               {
                 lesson: 1,
                 title: "Povos da Américas (précolombianos) e seus hábitos culturais e sociais. II",
@@ -99,7 +99,7 @@ const material = [
                 link: "https://youtu.be/b0-hU7Xo7Nw"
               }
             ],
-            português: [
+            Português: [
               {
                 lesson: 1,
                 title: "Fono-ortografia",
@@ -119,7 +119,7 @@ const material = [
                 link: "https://www.youtube.com/watch?v=2rhe97FG1Gw"
               }
             ],
-            ciências: [
+            Ciências: [
               {
                 lesson: 1,
                 title: "Separação de materiais",
@@ -151,7 +151,7 @@ const material = [
         bimester: 1,
         subejects: [
           {
-            história: [
+            História: [
               {
                 lesson: 1,
                 title: "Economia Feudal I",
@@ -171,7 +171,7 @@ const material = [
                 link: "https://youtu.be/Pn9TiyZgN2c"
               }
             ],
-            português: [
+            Português: [
               {
                 lesson: 1,
                 title: "Produção de anúncio publicitário",
@@ -191,7 +191,7 @@ const material = [
                 link: "https://youtu.be/QE2Qh3icXbs"
               }
             ],
-            ciências: [
+            Ciências: [
               {
                 lesson: 1,
                 title: "O que vemos ao olhar para o céu",
@@ -218,7 +218,7 @@ const material = [
         bimester: 2,
         subejects: [
           {
-            história: [
+            História: [
               {
                 lesson: 1,
                 title: "O encontro entre culturas no Brasil",
@@ -238,7 +238,7 @@ const material = [
                 link: "https://youtu.be/dV9wTmlitng"
               }
             ],
-            português: [
+            Português: [
               {
                 lesson: 1,
                 title: "Oficinas de escrita",
@@ -258,7 +258,7 @@ const material = [
                 link: "https://youtu.be/ABHzAhc5L8A"
               }
             ],
-            ciências: [
+            Ciências: [
               {
                 lesson: 1,
                 title: "O que é biodiversidade?",
