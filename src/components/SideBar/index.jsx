@@ -18,6 +18,7 @@ export default function SideBar({asideFunctions}) {
                 </div>
                 <nav className="aside-functions">
                     {
+                        
                         Array.isArray(asideFunctions) && asideFunctions.map(([nomeSecao, abas], index) => (
                             <ul key={index}>
                                 <li>
@@ -25,7 +26,7 @@ export default function SideBar({asideFunctions}) {
                                 </li>
                                 {
                                     abas?.map(([Icon, name], index) => (
-                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
+                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); setShowSideBar(false); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
                                             {
                                                 Icon && <Icon />}
                                             {name}
