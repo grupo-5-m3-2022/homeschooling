@@ -48,12 +48,37 @@ export const HeaderTable = styled.div`
     display: flex;
     justify-content: space-around;
     padding-left: 10px;
-    span{
+    div{
         color: black;
         font-weight: 700;
         font-size: 14px;
+        width: 25%;
+    }
+
+    .score{
+        padding-right: 50px;
+        width: 12.5%;
+    }
+    @media (max-width: 900px) {
+        .date{
+            display: none;
+        }
+    }
+    @media (max-width: 570px) {
+        .max{
+            display: none;
+        }    
+    }
+    @media (max-width: 530px) {
+        .subject{
+            display: none;
+        }  
+        .name{
+            width: 87.5%;
+        }  
     }
 `
+
 
 export const MediaGrades = styled.div`
     width: 100%;
@@ -88,4 +113,12 @@ export const Btn = styled.button`
     border: 1px solid white;
     border-radius: 8px;
     font-weight: 500;
+`
+
+export const NoGrades = styled.div`
+    width: 100%;
+    margin: 20px;
+
+    font-weight: 700;
+    font-size: 16px;
 `

@@ -1,12 +1,13 @@
 import { ContainerCard  } from "./style"
-function GradeCard({name, date, maxGrade, actualGrade}){
+function GradeCard({subject, name, date, maxGrade, actualGrade}){
 
     return(
         <ContainerCard>
-            <span>{name}</span>
-            <span>{date}</span>
-            <span>{maxGrade}</span>
-            <span>{actualGrade}</span>
+            <span className="subject">{subject}</span>
+            <span className="name">{name}</span>
+            <span className="date">{date}</span>
+            <span className="score max">{maxGrade}</span>
+            <span className="score">{actualGrade}</span>
         </ContainerCard>
     )
 }
