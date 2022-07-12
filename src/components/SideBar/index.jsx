@@ -16,13 +16,13 @@ export default function SideBar({asideFunctions, preset}) {
     const [animation, setAnimation] = useState('go')
     const history = useHistory()
 
-    if (preset === 'Estudante') {
+    if (preset.toLowerCase() === 'estudante') {
         asideFunctions = [
             ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
             ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
         ]
     }
-    else if (preset === "Professor (a)") {
+    else if (preset.toLowerCase() === "professor") {
         asideFunctions = [
             ["Painel de controle", [[BsFillPeopleFill, "Alunos"],[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
             ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
