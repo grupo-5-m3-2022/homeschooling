@@ -12,7 +12,7 @@ export default function Header() {
 
     return (
         <HeaderStyle>
-            <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(actual => !actual)}} className="sidebar-switch" />
+            <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(true)}} className="sidebar-switch" />
             <div className="header-container">
                 <div className="header-user">
                     <AiOutlineUser />
