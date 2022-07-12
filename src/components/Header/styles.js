@@ -45,16 +45,18 @@ export const HeaderStyle = styled.header`
         gap: 15px;
         padding: 7px 12px;
         border-radius: 5px;
+        width: 230px;
+        height: 60px;
 
         h3 {
             font-weight: 400;
-            font-size: 12px;
+            font-size: 16px;
             color: #444444;
         }
 
         h4 {
             font-weight: 400;
-            font-size: 10px;
+            font-size: 12px;
             color: #999B9F;
         }
 

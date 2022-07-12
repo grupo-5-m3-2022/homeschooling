@@ -1,14 +1,18 @@
-import { ContainerGrade, ContainerInfos, HeaderTable, GradesTable, MediaGrades, Btn, NoGrades } from "./styles"
+import { ContainerGrade, ContainerInfos, HeaderTable, GradesTable, MediaGrades, NoGrades } from "./styles"
 import GradeCard from "../GradeCard"
 import { useEffect, useState } from "react"
 import api from "../../services/api"
 import { useUserStates } from "../Providers"
+import SearchInput from "../SearchField"
+import material from "../../services/material"
 
 
 export default function Grade() {
     const [grades, setGrades] = useState([])
     const [token] = useState(localStorage.getItem("@token") || "")
     const { user } = useUserStates()
+    const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
+    const [subject, setSubject] = useState(allSubjects[0])
 
     function loadGrades(){
         api.get("/grades",{
@@ -19,12 +23,13 @@ export default function Grade() {
                 studentEmail: user.email
             }
         })
-        .then((response)=> setGrades(response.data))
+        .then((response)=> (setGrades(response.data.filter((grade) => grade.subject === subject))))
     }
-    
+
     useEffect(() => {
         loadGrades()
-    }, [grades])
+    }, [subject])
+
 
     const score = grades.map((grade) => grade.actualGrade).reduce((previousValue, currentValue)=>{
         return previousValue + currentValue
@@ -33,8 +38,9 @@ export default function Grade() {
     return (
         <ContainerGrade>
             <ContainerInfos>
-                <h3>{user.ano}</h3>
+                {user.position === 'Estudante' && <h3>{user.ano}</h3>}
                 <p>Bem vindo, {user.name}</p>
+                <SearchInput options={allSubjects.map(subject => ({value: subject, texto: subject}))} optionSetter={setSubject}/>
             </ContainerInfos>
             <GradesTable>
             <div>

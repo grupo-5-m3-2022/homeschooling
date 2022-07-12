@@ -2,7 +2,6 @@ import { createContext, useState, useContext} from "react";
 import { useHistory } from "react-router-dom";
 import api from "../../services/api";
 
-
 const DashboardStatesContext = createContext({})
 const SiteUserStatesContext = createContext({})
 const AnimationsStatesContext = createContext({})

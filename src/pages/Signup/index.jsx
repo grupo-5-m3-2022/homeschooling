@@ -16,7 +16,7 @@ export default function SignUp() {
         password: yup.string().required('Campo obrigatório').min(6, 'Mínimo de 6 caractéres'),
         confirmPassword: yup.string().oneOf([yup.ref("password")], 'Senhas não combinam').required('Campo obrigatório'),
         position: yup.string().required('Campo obrigatório'),
-        ano: yup.string().required('Campo obrigatório')
+        ano: yup.string()
     })
 
     const history = useHistory()
@@ -33,7 +33,12 @@ export default function SignUp() {
     
     function onSubmit({name, email, password, position, ano}) {
         const grade = []
-        const user = {name, email, password, position, ano, grade}
+        let user = {name, email, password, position, ano, grade}
+
+        if(position === 'Professor') {
+            user = {name, email, password, position}
+        }
+
         api.post('/signup', user)
             .then((_) => {
                 toast.success('Sucesso ao criar a conta!')
@@ -51,27 +56,27 @@ export default function SignUp() {
                 <Content>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <h2>Cadastrar Usuario</h2>
-                        {errors.name?.message && <span>- {errors.name.message}</span>}
+                        {errors?.name?.message && <span>- {errors.name.message}</span>}
                         <InputContainer>
                             <AiOutlineUser />
                             <input name='name' {...register("name")} placeholder='Nome'/>
                         </InputContainer>
-                        {errors.email?.message && <span>- {errors.name.message}</span>}
+                        {errors?.email?.message && <span>- {errors.email.message}</span>}
                         <InputContainer>
                             <AiOutlineMail />
                             <input name='email' {...register("email")} placeholder='Email'/>
                         </InputContainer>
-                        {errors.password?.message && <span>- {errors.name.message}</span>}
+                        {errors?.password?.message && <span>- {errors.password.message}</span>}
                         <InputContainer>
                             <AiOutlineLock />
                             <input name='password' {...register("password")} type="password" placeholder='Senha'/>
                         </InputContainer>
-                        {errors.confirmPassword?.message && <span>- {errors.name.message}</span>}
+                        {errors?.confirmPassword?.message && <span>- {errors.confirmPassword.message}</span>}
                         <InputContainer>
                             <AiOutlineLock />
                             <input name='confirmPassword' {...register("confirmPassword")} type="password" placeholder='Confirmar Senha'/>
                         </InputContainer>
-                        {errors.position?.message && <span>- {errors.name.message}</span>}
+                        {errors?.position?.message && <span>- {errors.position.message}</span>}
                         <InputContainer>
                             <AiOutlineInfoCircle />
                             <select {...register("position")} onChange={e => change(e)}>
@@ -85,7 +90,6 @@ export default function SignUp() {
                         <InputContainer>
                             <AiOutlineInfoCircle />
                                 <select name='ano' {...register("ano")}>
-                                    <option selected disabled defaultValue="">Selecione seu ano</option>
                                     <option value="1º Ano EF 1">1º Ano EF 1</option>
                                     <option value="2º Ano EF 1">2º Ano EF 1</option>
                                     <option value="3º Ano EF 1">3º Ano EF 1</option>
