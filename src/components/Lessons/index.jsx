@@ -5,14 +5,26 @@ import { useHistory } from "react-router-dom";
 import material from "../../services/material";
 import { useState } from "react";
 import { useDashboardStates, useUserStates, useAnimationStates } from "../Providers";
+import { useEffect } from "react";
 
 export default function Lessons() {
     const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
     const history = useHistory();
     const { setSelected } = useDashboardStates()
     const { user } = useUserStates()
-    const { lessonsAnimation } = useAnimationStates()
+    const { lessonsAnimation, setLessonsAnimation } = useAnimationStates()
     const [subject, setSubject] = useState(allSubjects[0]);
+
+    useEffect(() => {
+        return () => {
+            setSelected(actual => {
+                if (actual !== "aulas" && lessonsAnimation === 'back') {
+                    setLessonsAnimation('go')
+                }    
+                return actual
+            })
+        }
+    })
 
     return (
         <LessonsContentDiv animation={lessonsAnimation}>

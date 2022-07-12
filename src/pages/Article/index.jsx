@@ -4,25 +4,35 @@ import { HiCubeTransparent } from "react-icons/hi";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { RiArrowLeftSLine } from "react-icons/ri"
 import { DashboardContainer } from "../dashboard/styles";
+import { useDashboardStates, useUserStates } from "../../components/Providers";
+import { ArticleContent } from "./styles";
+import { useEffect } from "react";
 import material from "../../services/material";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
-import { useDashboardStates } from "../../components/Providers";
-import { ArticleContent } from "./styles";
 
 export default function Article() {
-    const { setSelected } = useDashboardStates()
     const history = useHistory()
+    const { setSelected } = useDashboardStates()
     const { subject, bimester, article } = useParams()
+    const { verifyUser, user } = useUserStates()
     const selectedMaterial = material[0].bimesters[bimester - 1].subejects[0][subject][article]
+
+    useEffect(() => {
+        async function asyncVerifyUser() {
+            let res = await verifyUser()
+            if(!res) {
+                history.push("/")
+            }
+        }
+
+        asyncVerifyUser()
+    })
 
     return (
         <DashboardContainer>
             {            
-                <SideBar asideFunctions={[
-                    ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
-                    ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
-                ]}/>
+                <SideBar preset={user.position}/>
             }
             <div className="dashboard-content">
                 <Header />

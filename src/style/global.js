@@ -56,4 +56,33 @@ export const GlobalStyle = createGlobalStyle`
     box-shadow: 0 0 0 0;
     outline: 0;
   }
+
+  @keyframes appearRight {
+        0% {
+            transform: translateX(100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes appearLeft {
+        0% {
+            transform: translateX(-100%);
+        }
+        100% {
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes hideLeft {
+        0% {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(-100%);
+        }
+    }
 `;

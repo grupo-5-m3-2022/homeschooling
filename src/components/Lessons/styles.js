@@ -61,22 +61,4 @@ export const LessonsContentDiv = styled.div`
             color: #6B758A;
         }
     }
-
-    @keyframes appearRight {
-        0% {
-            transform: translateX(100%);
-        }
-        100% {
-            transform: translateX(0);
-        }
-    }
-
-    @keyframes appearLeft {
-        0% {
-            transform: translateX(-100%);
-        }
-        100% {
-            transform: translateX(0);
-        }
-    }
 `

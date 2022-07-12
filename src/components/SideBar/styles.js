@@ -6,11 +6,13 @@ export const Aside = styled.aside`
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, .3);
     position: fixed;
     z-index: 2;
-
-    display: ${props => props.show ? "block" : "none"};
+    flex-direction: column;
+    display: ${props => props.show ? "flex" : "none"};
+    opacity: ${props => props.animation === "go" ? "1" : "0"};
+    animation: ${props => props.animation === "go" ? "appearLeft" : "hideLeft"} 500ms;
 
     .aside-title {
-        padding: 31px 40px 34px 45px;
+        padding: 33px 40px 34px 45px;
         color: #0075FF;
         font-size: 20px;
         font-weight: 700;
@@ -57,6 +59,14 @@ export const Aside = styled.aside`
                 font-size: 26px;
             }
         }
+    }
+
+    button {
+        margin: 20px;
+        padding: 10px;
+        background-color: #0075FF;
+        color: white;
+        border: none;
     }
 `;
 
