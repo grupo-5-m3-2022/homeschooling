@@ -1,7 +1,11 @@
+
 export default function Help() {
-    return (
-        <>
-            Ajuda
-        </>
-    )
+   
+      
+        return (
+            <>
+                Ajuda
+            </>
+        )
 }
+    
