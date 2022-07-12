@@ -1,9 +1,33 @@
-import { ButtonContainer, Container, Header, Icon, TotalContent, TotalStudants, Body, CardStudant, UserName, UserEmail, UserRemove } from "./styles"
+import { ButtonContainer, Container, Header, Icon, TotalContent, TotalStudants, Body, CardStudant, UserName, UserEmail, UserRemove, ModalHeader, ModalBody, ModalContent } from "./styles"
 import { BsBook } from "react-icons/bs"
 import { FiUser } from "react-icons/fi"
 import { IoPersonRemoveSharp } from "react-icons/io5"
+import { AiOutlineCloseCircle } from "react-icons/ai"
+import Modal from 'react-modal';
+import { useState } from "react";
+
+const customStyles = {
+    content: {
+      top: '50%',
+      left: '50%',
+      right: 'auto',
+      bottom: 'auto',
+      marginRight: '-50%',
+      transform: 'translate(-50%, -50%)',
+    },
+  };
 
 export default function Studants() {
+    const [modalAddStudant, setModalAddStudant] = useState(false)
+
+    function handleOpenModal() {
+        setModalAddStudant(true)
+    }
+
+    function handleCloseModal() {
+        setModalAddStudant(false)
+    }
+
     return(
         <Container>
             <Header>
@@ -18,8 +42,26 @@ export default function Studants() {
                 </TotalStudants>
 
                 <ButtonContainer>
-                    <button><span>+</span> Adicionar Aluno</button>
+                    <button onClick={handleOpenModal}><span>+</span> Adicionar Aluno</button>
                 </ButtonContainer>
+
+                <Modal isOpen={modalAddStudant} onRequestClose={handleCloseModal} style={customStyles}>
+                    <ModalHeader>
+                        <h4>Cadastrar Aluno</h4>
+                        <button onClick={handleCloseModal}><AiOutlineCloseCircle /></button>
+                    </ModalHeader>
+
+                    <ModalBody>
+                        <ModalContent>
+                            <input placeholder="Digite o e-mail do(a) aluno(a)"/>
+                            <input placeholder="Digite o nome do(a) aluno(a)"/>
+                            <div>
+                                <button onClick={handleCloseModal} className="btnClose">Cancelar</button>
+                                <button className="btnSend">Enviar</button>
+                            </div>
+                        </ModalContent>
+                    </ModalBody>
+                </Modal>
             </Header>
 
             <Body>

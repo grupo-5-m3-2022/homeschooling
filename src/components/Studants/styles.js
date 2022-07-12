@@ -117,3 +117,62 @@ export const UserRemove = styled.button`
     border: none;
     background-color: #FFFFFF;
 `
+
+export const ModalHeader = styled.div`
+    width: 300px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    button {
+        border: none;
+        background-color: transparent;
+        font-size: 28px;
+    }
+`
+
+export const ModalBody = styled.div`
+    width: 300px;
+    height: 300px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+`
+
+export const ModalContent = styled.div`
+    display: flex;
+    flex-direction: column;
+
+    div {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+        margin-right: 15px;
+        padding: 5px;
+
+        button {
+            margin: 5px;
+            height: 30px;
+            width: 80px;
+            border-radius: 10px;
+            border: none;
+            color: #FFFFFF;
+            font-weight: 600;
+        }
+
+        .btnSend {
+            background-color: #0075FF;
+        }
+
+        .btnClose {
+            background-color: #fc204c;
+        }
+    }
+
+    input {
+        margin: 7px;
+        padding: 10px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid gray;
+    }
+`
