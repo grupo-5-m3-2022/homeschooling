@@ -138,9 +138,15 @@ export const ModalBody = styled.div`
     border-radius: 5px;
 `
 
-export const ModalContent = styled.div`
+export const ModalContent = styled.form`
     display: flex;
     flex-direction: column;
+
+    span {
+        margin-top: 5px;
+        font-size: 12px;
+        color: red;
+    }
 
     div {
         width: 100%;
