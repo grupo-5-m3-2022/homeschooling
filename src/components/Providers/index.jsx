@@ -36,6 +36,8 @@ export default function Providers({children}) {
     const [articleAnimation, setArticleAnimation] = useState("go")
 
     async function verifyUser() {
+        console.log(user?.logged)
+
         if (user?.logged) {
             return true
         }
@@ -47,8 +49,14 @@ export default function Providers({children}) {
                 }
             })
             .then(response => {
-                const {ano, email, name, position, professors} = response.data
-                setUser({ano, email, name, position, professors, logged: true})
+                const {ano, email, name, position, professors, alunos} = response.data
+                if (alunos) {
+                    setUser({ano, email, name, position, alunos, logged: true})
+
+                }
+                else {
+                    setUser({ano, email, name, position, professors, logged: true})
+                }
 
                 return true
             })

@@ -12,9 +12,11 @@ import { useState } from "react"
 
 export default function SideBar({asideFunctions, preset}) {
     const { selected, setSelected, showSideBar, setShowSideBar } = useDashboardStates()
-    const { logOut } = useUserStates()
+    const { logOut, user } = useUserStates()
     const [animation, setAnimation] = useState('go')
     const history = useHistory()
+
+    console.log(user.position)
 
     if (preset.toLowerCase() === 'estudante') {
         asideFunctions = [

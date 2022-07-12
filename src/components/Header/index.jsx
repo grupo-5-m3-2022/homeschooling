@@ -8,8 +8,6 @@ export default function Header() {
     const { setShowSideBar } = useDashboardStates()
     const { user } = useUserStates()
 
-    user.position === '0' ? user.position = 'Estudante' : user.position = 'Professor'
-
     return (
         <HeaderStyle>
             <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(true)}} className="sidebar-switch" />
