@@ -27,11 +27,18 @@ export default function SignUp() {
     const Pos = positionType.map(Pos => Pos)
     const [inputPosition, setInputPosition] = useState("")
     
-    function change(event) {
-        setInputPosition(event.target.value)
+    function change(e) {
+        let input = ''
+        if(e.target.value === '0') {
+            input = 'Estudante'
+        } else {
+            input = 'Professor'
+        }
+        setInputPosition(input)
     }
     
     function onSubmit({name, email, password, position, ano}) {
+        position = inputPosition;
         const grade = []
         let user = {name, email, password, position, ano, grade}
 
@@ -86,7 +93,7 @@ export default function SignUp() {
                                 }
                             </select>
                         </InputContainer>
-                            {inputPosition === "0" && 
+                            {inputPosition === "Estudante" && 
                         <InputContainer>
                             <AiOutlineInfoCircle />
                                 <select name='ano' {...register("ano")}>
