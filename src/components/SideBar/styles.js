@@ -1,4 +1,13 @@
-import styled from "styled-components";
+import styled, {keyframes} from "styled-components";
+
+const appearFromLeft = keyframes`
+    from{
+        transform: translateX(-300px);
+    }
+    to{
+        transform: translateX(0px);
+    }
+`
 
 export const Aside = styled.aside`
     height: 100%;
@@ -6,6 +15,7 @@ export const Aside = styled.aside`
     box-shadow: 0 0 15px 0 rgba(0, 0, 0, .3);
     position: fixed;
     z-index: 2;
+    animation: ${appearFromLeft} 0.4s;
 
     display: ${props => props.show ? "block" : "none"};
 

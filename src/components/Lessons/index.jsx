@@ -17,7 +17,7 @@ export default function Lessons() {
     return (
         <LessonsContentDiv animation={lessonsAnimation}>
             <div className="lessons-title">
-                <h2>{user?.year}</h2>
+                {user.position === 'Estudante' && <h2>{user?.ano}</h2>}
                 <h3>Bem vindo, {user?.name?.split(' ').slice(0, 1).join("")}!</h3>
             </div>
             <SearchInput options={allSubjects.map(subject => ({value: subject, texto: subject}))} optionSetter={setSubject}/>

@@ -38,7 +38,7 @@ export default function Grade() {
     return (
         <ContainerGrade>
             <ContainerInfos>
-                <h3>{user.ano}</h3>
+                {user.position === 'Estudante' && <h3>{user.ano}</h3>}
                 <p>Bem vindo, {user.name}</p>
                 <SearchInput options={allSubjects.map(subject => ({value: subject, texto: subject}))} optionSetter={setSubject}/>
             </ContainerInfos>
