@@ -36,18 +36,24 @@ export default function Lessons() {
             <div>
                 <ul className="lessons-cardList">
                     {
-                        material[0].bimesters.map((bimester, index) => (
-                            Object.keys(...bimester.subejects).includes(subject) && <li key={index}>
-                                <div className="lessons-card" onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester.bimester}`)}}>
-                                    <GrTemplate />
-                                    <div>
-                                        <h3>Bimestre {bimester.bimester}</h3>
-                                        <h4>{material[0].ano}°</h4>
-                                        <h4>{subject}</h4>
-                                    </div>
-                                    </div>
-                            </li>
-                        ))
+                        material.map(({ano, bimesters}) => {
+                            if (ano === user?.ano) {
+                                return bimesters.map((bimester, index) => (
+                                    Object.keys(...bimester.subejects).includes(subject) && <li key={index}>
+                                        <div className="lessons-card" onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester.bimester}`)}}>
+                                            <GrTemplate />
+                                            <div>
+                                                <h3>Bimestre {bimester.bimester}</h3>
+                                                <h4>{material[0].ano}°</h4>
+                                                <h4>{subject}</h4>
+                                            </div>
+                                            </div>
+                                    </li>
+                                ))                                
+                            }
+                            
+                            return null
+                        })
                     }
                 </ul>
             </div>

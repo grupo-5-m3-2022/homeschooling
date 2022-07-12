@@ -47,7 +47,7 @@ export default function SideBar({asideFunctions, preset}) {
                                 </li>
                                 {
                                     abas?.map(([Icon, name], index) => (
-                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); setShowSideBar(false); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
+                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
                                             {
                                                 Icon && <Icon />}
                                             {name}
