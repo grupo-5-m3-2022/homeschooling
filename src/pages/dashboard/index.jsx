@@ -15,6 +15,7 @@ export default function Dashboard() {
     const { user, verifyUser } = useUserStates()
     const history = useHistory()
 
+
     useEffect(() => {
         async function asyncVerifyUser() {
             let res = await verifyUser()

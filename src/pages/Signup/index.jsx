@@ -82,7 +82,7 @@ export default function SignUp() {
                             <select {...register("position")} onChange={e => change(e)}>
                                 <option selected disabled value="">Selecione uma opção</option>
                                 {
-                                    Pos.map((position, key) => <option value={key}>{position}</option>)
+                                    Pos.map((position, key) => <option key={key} value={key}>{position}</option>)
                                 }
                             </select>
                         </InputContainer>
