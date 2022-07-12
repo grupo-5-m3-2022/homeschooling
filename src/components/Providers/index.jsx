@@ -36,7 +36,6 @@ export default function Providers({children}) {
     const [articleAnimation, setArticleAnimation] = useState("go")
 
     async function verifyUser() {
-        console.log(user?.logged)
 
         if (user?.logged) {
             return true

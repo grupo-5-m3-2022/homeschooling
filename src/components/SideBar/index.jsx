@@ -16,7 +16,6 @@ export default function SideBar({asideFunctions, preset}) {
     const [animation, setAnimation] = useState('go')
     const history = useHistory()
 
-    console.log(user.position)
 
     if (preset.toLowerCase() === 'estudante') {
         asideFunctions = [
