@@ -10,6 +10,7 @@ import api from "../../services/api"
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { toast } from 'react-toastify'
 
 const customStyles = {
     content: {
@@ -27,24 +28,25 @@ export default function Studants() {
     const token = localStorage.getItem("@token")
     const id = localStorage.getItem("@userId")
     const [studantsList, setStudantsList] = useState([])
-    const length = studantsList?.students?.length || 0
+    const length = studantsList[0]?.students?.length || 0
 
-    async function loadStudants() {
-        const res = await api.get('/connections', {
+    function loadStudants() {
+        const res = api.get(`/connections`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }, 
+            },
             params: {
                 professorEmail: user.email
             }
         })
         .then(response => {
-            setStudantsList(response.data[0])
+            setStudantsList(response.data)
         })
         .catch(err => console.log(err))
 
         return res
     }
+
 
     useEffect(() => {
         loadStudants()
@@ -56,8 +58,51 @@ export default function Studants() {
     })
     const {register, handleSubmit, formState: {errors}} = useForm({resolver: yupResolver(schema)})
 
-    function onSubmit(data) {
-        console.log(data)
+    function onSubmit({email, name}) {
+
+            if(studantsList.length === 0) {
+                api.post('/connections', {
+                    "professorName": user.name,
+                    "professorEmail": user.email,
+                    "students": [ 
+                        {
+                            "studentName": name,
+                            "studentEmail": email
+                        }
+                    ],
+                    "userId": id
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((_) => {
+                    handleCloseModal()
+                    toast.success('Aluno(a) adicionado com sucesso!')
+                })
+                .catch(err => console.log(err))
+            } else {
+                api.put(`/connections/${id}`, {
+                    "professorName": user.name,
+                    "professorEmail": user.email,
+                    "students": [...studantsList[0]?.students, 
+                        {
+                            "studentName": name,
+                            "studentEmail": email
+                        }
+                    ],
+                    "userId": id
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((_) => {
+                    handleCloseModal()
+                    toast.success('Aluno(a) adicionado com sucesso!')
+                })
+                .catch(err => console.log(err))
+            }
     }
 
     const [modalAddStudant, setModalAddStudant] = useState(false)
@@ -67,6 +112,22 @@ export default function Studants() {
 
     function handleCloseModal() {
         setModalAddStudant(false)
+    }
+
+    function handleRemoveStudant(email) {
+        const filter = studantsList[0].students.filter(student => student.studentEmail !== email)
+        api.put(`/connections/${id}`, {
+            "professorName": user.name,
+            "professorEmail": user.email,
+            "students": [...filter],
+            "userId": id, 
+        }, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((_) => toast.success(`Aluno(a) ${email} removido com sucesso!`))
+        .catch(err => console.log(err))
     }
 
     return(
@@ -108,7 +169,7 @@ export default function Studants() {
             </Header>
 
             <Body>
-                {studantsList?.students?.map((student, index) => (
+                {studantsList[0]?.students?.map((student, index) => (
                 <CardStudant key={index}>
                     <UserName>
                         <span><FiUser /></span>
@@ -117,7 +178,7 @@ export default function Studants() {
                     <UserEmail>
                         <p>{student.studentEmail}</p>
                     </UserEmail>
-                    <UserRemove>
+                    <UserRemove onClick={() => handleRemoveStudant(student.studentEmail)}>
                         <IoPersonRemoveSharp />
                     </UserRemove>
                 </CardStudant>
