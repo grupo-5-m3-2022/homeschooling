@@ -6,7 +6,7 @@ import { RiArrowLeftSLine } from "react-icons/ri"
 import { DashboardContainer } from "../dashboard/styles";
 import { useDashboardStates, useUserStates } from "../../components/Providers";
 import { ArticleContent } from "./styles";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import material from "../../services/material";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
@@ -16,7 +16,7 @@ export default function Article() {
     const { setSelected } = useDashboardStates()
     const { subject, bimester, article } = useParams()
     const { verifyUser, user } = useUserStates()
-    const selectedMaterial = material[0].bimesters[bimester - 1].subejects[0][subject][article]
+    const [selectedMaterial, setSelectedMaterial] = useState({})
 
     useEffect(() => {
         async function asyncVerifyUser() {
@@ -24,10 +24,11 @@ export default function Article() {
             if(!res) {
                 history.push("/")
             }
+            setSelectedMaterial(material.filter(({ano, bimesters}) => ano === user?.ano)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
         }
 
         asyncVerifyUser()
-    })
+    }, [])
 
     return (
         <DashboardContainer>
@@ -39,8 +40,8 @@ export default function Article() {
                 <main>
                     <ArticleContent>
                         <div className="article-title">
-                            <h2>8° Ano do Ensino Fundamental</h2>
-                            <h3>Bem vindo, Tales!</h3>
+                            <h2>{user?.ano}</h2>
+                            <h3>Bem vindo, {user?.name}!</h3>
                         </div>
                         <div className="article-navegation">
                             <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>
@@ -52,10 +53,10 @@ export default function Article() {
                             <button>Artigo {Number(article) + 1}</button>
                         </div>
                         <div className="article-content">
-                            <h1>{selectedMaterial.title}</h1>
+                            <h1>{selectedMaterial?.title}</h1>
                             <div>
                                 {
-                                    selectedMaterial.content.split('\n').map((content, index) => (
+                                    selectedMaterial?.content?.split('\n').map((content, index) => (
                                         <p key={index}>&nbsp;&nbsp;&nbsp;&nbsp;{content}</p>
                                     ))
                                 }

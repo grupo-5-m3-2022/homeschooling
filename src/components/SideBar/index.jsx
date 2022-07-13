@@ -12,18 +12,18 @@ import { useState } from "react"
 
 export default function SideBar({asideFunctions, preset}) {
     const { selected, setSelected, showSideBar, setShowSideBar } = useDashboardStates()
-    const { logOut, user } = useUserStates()
+    const { logOut } = useUserStates()
     const [animation, setAnimation] = useState('go')
     const history = useHistory()
 
 
-    if (preset.toLowerCase() === 'estudante') {
+    if (preset?.toLowerCase() === 'estudante') {
         asideFunctions = [
             ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
             ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
         ]
     }
-    else if (preset.toLowerCase() === "professor") {
+    else if (preset?.toLowerCase().includes("professor")) {
         asideFunctions = [
             ["Painel de controle", [[BsFillPeopleFill, "Alunos"],[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
             ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
@@ -48,7 +48,7 @@ export default function SideBar({asideFunctions, preset}) {
                                 </li>
                                 {
                                     abas?.map(([Icon, name], index) => (
-                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); setShowSideBar(false); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
+                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
                                             {
                                                 Icon && <Icon />}
                                             {name}
