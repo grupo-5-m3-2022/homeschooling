@@ -28,6 +28,27 @@ export const LessonsContentDiv = styled.div`
         }
     }
 
+    .lessons-filter {
+        display: flex;
+        gap: 25px;
+        font-size: 12px;
+        background-color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+        color: #363535;
+        width: max-content;
+
+        & > div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+
+            & > p {
+                padding-left: 10px;
+            }
+        }
+    }
+
     .lessons-cardList {
         display: flex;
         gap: 30px;            

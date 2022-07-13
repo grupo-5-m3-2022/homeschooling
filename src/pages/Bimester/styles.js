@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const BimesterContent = styled.div`
-    padding: 32px 54px;
+    padding: ${props => props.nopadding ? "" : "32px 54px"};
     display: flex;
     flex-direction: column;
     gap: 35px;
@@ -22,7 +22,6 @@ export const BimesterContent = styled.div`
             color: #6B758A;
         }
     }
-
 
     .bimester-navegation {
         width: max-content;
@@ -57,9 +56,10 @@ export const BimesterContent = styled.div`
             gap: 25px;
         }
 
-        div {
+        .lesson-info {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            font-size: 12px;
             gap: 15px;
             padding: 20px 30px;
             background-color: white;
@@ -69,6 +69,19 @@ export const BimesterContent = styled.div`
                 font-size: 14px;
                 font-weight: 700;
             }
+        }
+
+        .lesson-moreInfo {
+            display: flex;
+            gap: 30px;
+            color: #6B758A;
+        }
+
+        .lesson-title {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 16px;
         }
     }
 
