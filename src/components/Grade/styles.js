@@ -8,6 +8,7 @@ export const ContainerGrade = styled.div`
     flex-direction: column;
     padding: 32px 54px;
     background-color: #F0F7FD;
+    animation: appearRight 500ms;
 `
 
 export const ContainerInfos = styled.div`

@@ -1,27 +1,36 @@
-import { FiSettings, FiClipboard } from "react-icons/fi"
-import { AiOutlineInfoCircle } from "react-icons/ai"
-import { HiCubeTransparent } from "react-icons/hi"
 import { DashboardContainer } from "./styles"
 import SideBar from "../../components/SideBar"
 import Lessons from "../../components/Lessons"
-import Performance from "../../components/Grade"
+import Grade from "../../components/Grade"
 import Help from "../../components/Help"
 import Settings from "../../components/Settings"
+import Studants from "../../components/Studants"
 import Header from "../../components/Header"
-import { useDashboardStates } from "../../components/Providers"
+import { useDashboardStates, useUserStates } from "../../components/Providers"
+import { useEffect } from "react"
+import { useHistory } from "react-router-dom"
 
 
 export default function Dashboard() {
     const { selected } = useDashboardStates()
+    const { user, verifyUser } = useUserStates()
+    const history = useHistory()
+
+
+    useEffect(() => {
+        async function asyncVerifyUser() {
+            let res = await verifyUser()
+            if(!res) {
+                history.push("/")
+            }
+        }
+
+        asyncVerifyUser()
+    })
 
     return (
-        <DashboardContainer>
-            {            
-                <SideBar asideFunctions={[
-                    ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
-                    ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
-                ]}/>
-            }
+        user?.logged && <DashboardContainer>
+            <SideBar preset={user.position}/>
             <div className="dashboard-content">
                 <Header/>
                 <main>
@@ -29,11 +38,13 @@ export default function Dashboard() {
                         selected === 'aulas' ?
                             <Lessons /> :
                         selected === 'desempenho' ?
-                            <Performance /> :
+                            <Grade /> :
                         selected === 'configurações' ?
                             <Settings /> :
                         selected === 'ajuda' ?
                             <Help /> :
+                        selected === 'alunos' ?
+                            <Studants /> :
                         null
                     }
                 </main>

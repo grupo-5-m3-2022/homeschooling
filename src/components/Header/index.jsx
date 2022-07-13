@@ -1,4 +1,4 @@
-import { BiBell } from "react-icons/bi"
+// import { BiBell } from "react-icons/bi"
 import { GiHamburgerMenu } from "react-icons/gi"
 import { AiOutlineUser } from "react-icons/ai"
 import { HeaderStyle } from "./styles"
@@ -10,9 +10,8 @@ export default function Header() {
 
     return (
         <HeaderStyle>
-            <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(actual => !actual)}} className="sidebar-switch" />
+            <GiHamburgerMenu onClick={() => {if (setShowSideBar) setShowSideBar(true)}} className="sidebar-switch" />
             <div className="header-container">
-                <BiBell />
                 <div className="header-user">
                     <AiOutlineUser />
                     <div>
