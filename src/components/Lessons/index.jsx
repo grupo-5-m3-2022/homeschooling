@@ -18,7 +18,7 @@ export default function Lessons() {
 
     const { lessonsAnimation, setLessonsAnimation } = useAnimationStates()
     const [yearProfessor, setYearProfessor] = useState("todos")
-    const [subject, setSubject] = useState('todos');
+    const [subject, setSubject] = useState('todas');
     const [bimesterProfessor, setBimesterProfessor] = useState('todos')
     const [lessonsProfessor, setLessonsProfessor] = useState('todas')
     const [filteredMaterial, setFilteredMaterial] = useState({})
@@ -41,7 +41,7 @@ export default function Lessons() {
 
     function filterSubject() {
         const tempMaterial = {}
-        tempMaterial.lessons = filteredMaterial?.bimester?.map((bimesters) => bimesters.filter(({subejects}) => (Object.keys(...subejects).includes(subject) || subject === 'todos')))
+        tempMaterial.lessons = filteredMaterial?.bimester?.map((bimesters) => bimesters.filter(({subejects}) => (Object.keys(...subejects).includes(subject) || subject === 'todas')))
         setFilteredMaterial(actual => ({...actual, ...tempMaterial}))
     }
 
@@ -105,7 +105,7 @@ export default function Lessons() {
                             </div>
                             <div>
                                 <p>Filtrar por matéria:</p>
-                                <SearchInput options={[{valor: "todos", texto: "Todos"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setSubject}/>
+                                <SearchInput options={[{valor: "todas", texto: "Todos"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setSubject}/>
                             </div>
                             <div>
                                 <p>Filtrar por bimestre:</p>
@@ -141,16 +141,17 @@ export default function Lessons() {
                         })
                     }
                     {
-                        user?.position.toLowerCase().includes('professor') && (lessonsProfessor === "todas" || lessonsProfessor === 'aulas') && <BimesterContent nopadding>
+                        user?.position.toLowerCase().includes('professor') && (lessonsProfessor === "todas" || lessonsProfessor === 'aulas') && <li>
+                            <BimesterContent nopadding>
                         <div className="bimester-content">
                             <ul>
                                 {
                                     filteredMaterial?.lessons?.map((filteredBimesters) => filteredBimesters.map((filteredLesson) => filteredLesson.subejects.map(lesson => {
-                                        if (subject === 'todos') {
+                                        if (subject === 'todas') {
                                             return Object.keys(lesson).map(lessonSubject => (
                                                 lesson[lessonSubject].map((finalLesson, index) => (
                                                     <li key={index}>
-                                                        <div className="lesson-info" onClick={() => history.push(`/dashboard/${lessonSubject.toLowerCase()}/${filteredLesson.bimester}/${index}?ano=${filteredLesson.ano}`)}>
+                                                        <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${lessonSubject.toLowerCase()}/${filteredLesson.bimester}/${index}?ano=${filteredLesson.ano}`)}}>
                                                             <div className="lesson-title">
                                                                 <GrDocumentText />
                                                                 <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
@@ -167,7 +168,7 @@ export default function Lessons() {
                                         else {
                                             return lesson[subject].map((finalLesson, index) => (
                                                     <li key={index}>
-                                                        <div className="lesson-info" onClick={() => history.push(`/dashboard/${subject}/${filteredLesson.bimester.toLowerCase()}/${index}?ano=${filteredLesson.ano}`)}>
+                                                        <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${subject}/${filteredLesson.bimester.toLowerCase()}/${index}?ano=${filteredLesson.ano}`)}}>
                                                             <div className="lesson-title">
                                                                 <GrDocumentText />
                                                                 <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
@@ -186,7 +187,7 @@ export default function Lessons() {
                             </ul>
                         </div>
                     </BimesterContent>
-                    }
+                    </li>                    }
                 </ul>
             </div>
         </LessonsContentDiv>
