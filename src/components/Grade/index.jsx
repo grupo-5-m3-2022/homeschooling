@@ -5,6 +5,9 @@ import api from "../../services/api"
 import { useUserStates } from "../Providers"
 import SearchInput from "../SearchField"
 import material from "../../services/material"
+import GradeModal from "../GradeModal"
+import { toast } from "react-toastify"
+import GradeModalEdit from "../GradeModalEdit"
 
 
 export default function Grade() {
@@ -14,8 +17,9 @@ export default function Grade() {
     const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
     const [subject, setSubject] = useState(allSubjects[0])
     const [students, setStudents] = useState([])
-    const [student, setStudent] = useState("") // email only
-    const [studentData, setStundentData] = useState({})
+    const [student, setStudent] = useState("") 
+    const [modal, setModal] = useState(false)
+    const [modalEdit, setModalEdit] = useState(false)
 
     function loadGrades(){
         api.get("/grades",{
@@ -29,10 +33,15 @@ export default function Grade() {
         .then((response)=> (setGrades(response.data.filter((grade) => grade.subject === subject))))
     }
 
+    console.log(grades)
+
     
     useEffect(() => {
         loadGrades()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [subject])
+
+    //professor
     
     function loadStudents(){
         api.get("/connections",{
@@ -44,9 +53,8 @@ export default function Grade() {
             }
         })
         .then((response)  => {
-            setStudents(response.data[0].students)
-            setStudent(response.data[0].students[0].studentEmail)
-            setStundentData(students.filter((aluno)=> aluno.studentEmail === student))
+            setStudents(response.data[0]?.students)
+            setStudent(response.data[0]?.students[0]?.studentEmail)
         })
         .catch((err)=> console.log(err))
     }
@@ -63,22 +71,33 @@ export default function Grade() {
         })
         .then((response) => setGrades(response.data))
         .catch((err)=> console.log(err))
-         
-    console.log(student)
     }
  
- console.log(student)
 
     useEffect(()=>{
-        setStundentData(students.filter((aluno)=> aluno.studentEmail === student))
         loadStudentGrade()
-    },[student])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [student])
 
     useEffect(() => {
         loadStudents()
         loadStudentGrade()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
+    function deleteGrade(id){
+        api.delete(`/grades/${id}`,{
+            headers:{
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((_)=> {
+            toast.success("Nota deletada")
+            loadStudentGrade()
+        })
+        .catch((err) => console.log(err))
+    }
+
 
     const score = grades.map((grade) => grade.actualGrade).reduce((previousValue, currentValue)=>{
         return previousValue + currentValue
@@ -104,7 +123,7 @@ export default function Grade() {
                 </HeaderTable>
                 {grades.length > 0 ? 
                 grades.map((grade)=>( 
-                    <GradeCard key={grade.id} subject={grade.subject} name={grade.name} date={grade.date} maxGrade={grade.maxGrade} actualGrade={grade.actualGrade}/>
+                    <GradeCard key={grade.id} grade={grade}/>
                 )):
                 <NoGrades> Nenhuma nota foi adicionada até o momento </NoGrades>}
                 </div>
@@ -124,11 +143,16 @@ export default function Grade() {
         <ContainerInfos>
             <p>Bem vindo, {user.name}</p>
              <SearchInput options={students.map(student => 
-                ({value: student.studentEmail, texto: student.studentEmail}))} optionSetter={setStudent}/>
+                ({valor: student.studentEmail, texto: student.studentName}))} optionSetter={setStudent}/>
+                <button onClick={()=> setModal(true)}>Lançar Nota</button>
 
         </ContainerInfos>
         <GradesTable>
         <div>
+            {modal? <GradeModal loadStudentGrade={loadStudentGrade} 
+            setModal={setModal} token={token}/> : null}
+            { modalEdit ? <GradeModalEdit setModalEdit={setModalEdit} token={token} 
+                loadStudentGrade={loadStudentGrade}/>: null }
             <HeaderTable>
                 <div className="subject">Matéria</div>
                 <div className="name">Nome</div>
@@ -138,7 +162,8 @@ export default function Grade() {
             </HeaderTable>
             {grades.length > 0 ? 
             grades.map((grade)=>( 
-                <GradeCard key={grade.id} subject={grade.subject} name={grade.name} date={grade.date} maxGrade={grade.maxGrade} actualGrade={grade.actualGrade}/>
+                <GradeCard key={grade.id} deleteGrade={deleteGrade} setModalEdit={setModalEdit} 
+                isProfessor grade={grade}/>
             )):
             <NoGrades> Nenhuma nota foi adicionada até o momento </NoGrades>}
             </div>

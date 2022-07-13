@@ -25,6 +25,14 @@ export const ContainerInfos = styled.div`
         font-size: 14px;
         margin-bottom: 30px;
     }
+    button{
+        background-color: #87CEFA;
+        height: 35px;
+        width: 100%;
+        max-width: 150px;
+        border-radius: 4px;
+        margin-top: 10px;
+    }
 `
 
 export const GradesTable = styled.div`

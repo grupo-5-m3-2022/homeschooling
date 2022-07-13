@@ -1,7 +1,4 @@
-import { useParams, useHistory } from "react-router-dom";
-import { FiClipboard, FiSettings } from "react-icons/fi";
-import { HiCubeTransparent } from "react-icons/hi";
-import { AiOutlineInfoCircle } from "react-icons/ai";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 import { RiArrowLeftSLine } from "react-icons/ri"
 import { DashboardContainer } from "../dashboard/styles";
 import { useDashboardStates, useUserStates } from "../../components/Providers";
@@ -16,6 +13,8 @@ export default function Article() {
     const { setSelected } = useDashboardStates()
     const { subject, bimester, article } = useParams()
     const { verifyUser, user } = useUserStates()
+    const { search } = useLocation()
+    const queryYear = new URLSearchParams(search).get('ano')
     const [selectedMaterial, setSelectedMaterial] = useState({})
 
     useEffect(() => {
@@ -24,10 +23,17 @@ export default function Article() {
             if(!res) {
                 history.push("/")
             }
-            setSelectedMaterial(material.filter(({ano, bimesters}) => ano === user?.ano)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
+
+            if (user.position.toLowerCase() === 'estudante') {
+                setSelectedMaterial(material.filter(({ano}) => ano === user?.ano)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
+            }
+            else if (user.position.toLowerCase().includes('professor')) {
+                setSelectedMaterial(material.filter(({ano}) => ano === queryYear)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
+            }
         }
 
         asyncVerifyUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -44,10 +50,19 @@ export default function Article() {
                             <h3>Bem vindo, {user?.name}!</h3>
                         </div>
                         <div className="article-navegation">
-                            <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>
-                                <RiArrowLeftSLine />
-                                Voltar
-                            </button>
+                            {
+                                user?.position?.toLowerCase() === 'estudante' ?
+                                    <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>
+                                        <RiArrowLeftSLine />
+                                        Voltar
+                                    </button> :
+                                user?.position?.toLowerCase().includes('professor') ?
+                                    <button onClick={() => {setSelected("aulas"); history.push(`/dashboard`)}}>
+                                        <RiArrowLeftSLine />
+                                        Voltar
+                                    </button> :
+                                    null
+                            }
                             <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>{subject}</button>
                             <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>Bimestre {bimester}</button>
                             <button>Artigo {Number(article) + 1}</button>

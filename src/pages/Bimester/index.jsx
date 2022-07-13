@@ -26,6 +26,7 @@ export default function Bimester() {
         }
 
         asyncVerifyUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -56,18 +57,6 @@ export default function Bimester() {
                                 {
                                     material.map(({ano, bimesters}) => {
                                         if (ano === user?.ano) {
-                                            // return bimesters.map(bimesterMaterial => (
-                                            //     bimesterMaterial.bimester === Number(bimester) ? 
-                                            //         bimesterMaterial.subejects[0][subject].map((lessons, index) => (
-                                                        // <li key={index}>
-                                                        //     <div onClick={() => history.push(`/dashboard/${subject}/${bimester}/${index}`)}>
-                                                        //         <GrDocumentText />
-                                                        //         <h3>{lessons.title.split(' ').length > 8 ? lessons.title.split(' ').slice(0, 8).join(' ') + '...' : lessons.title}</h3>
-                                                        //     </div>
-                                                        // </li>
-                                            //         )) : 
-                                            //         null
-                                            //     ))
                                             return bimesters.map(({bimester, subejects}) => {
                                                 if (bimester === Number(bimesterParam)) {
                                                     return subejects[0][subject[0].toUpperCase() + subject.slice(1)].map((lessons, index) => (
@@ -79,9 +68,11 @@ export default function Bimester() {
                                                         </li>
                                                     ))
                                                 }
+                                                return null
                                             })
 
                                         }
+                                        return null
                                     }) 
                                 }
                             </ul>
