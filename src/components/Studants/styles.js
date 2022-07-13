@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
     padding: 30px;
     width: 100%;
+    animation: appearRight 500ms;
 `
 
 export const Header = styled.div`
