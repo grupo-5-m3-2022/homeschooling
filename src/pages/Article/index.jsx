@@ -1,7 +1,4 @@
 import { useParams, useHistory } from "react-router-dom";
-import { FiClipboard, FiSettings } from "react-icons/fi";
-import { HiCubeTransparent } from "react-icons/hi";
-import { AiOutlineInfoCircle } from "react-icons/ai";
 import { RiArrowLeftSLine } from "react-icons/ri"
 import { DashboardContainer } from "../dashboard/styles";
 import { useDashboardStates, useUserStates } from "../../components/Providers";
