@@ -29,7 +29,13 @@ export default function Lessons() {
 
     function filterYearProfessor() {
         const tempMaterial = {}
-        tempMaterial.year = material.filter(({ano}) => ((ano === yearProfessor) || (yearProfessor === 'todos')))
+        tempMaterial.year = material.filter(({ano, bimesters}) => {
+            if ((ano === yearProfessor) || (yearProfessor === 'todos')) {
+                bimesters = bimesters.map(bimester => {bimester.ano = ano; return bimester})
+                return true
+            }
+            return false
+        })
         setFilteredMaterial(actual => ({...actual, ...tempMaterial}))
     }
 
@@ -144,7 +150,7 @@ export default function Lessons() {
                                             return Object.keys(lesson).map(lessonSubject => (
                                                 lesson[lessonSubject].map((finalLesson, index) => (
                                                     <li key={index}>
-                                                        <div className="lesson-info" onClick={() => history.push(`/dashboard/${subject}/${0}/${index}`)}>
+                                                        <div className="lesson-info" onClick={() => history.push(`/dashboard/${lessonSubject.toLowerCase()}/${filteredLesson.bimester}/${index}?ano=${filteredLesson.ano}`)}>
                                                             <div className="lesson-title">
                                                                 <GrDocumentText />
                                                                 <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
@@ -161,7 +167,7 @@ export default function Lessons() {
                                         else {
                                             return lesson[subject].map((finalLesson, index) => (
                                                     <li key={index}>
-                                                        <div className="lesson-info" onClick={() => history.push(`/dashboard/${subject}/${0}/${index}`)}>
+                                                        <div className="lesson-info" onClick={() => history.push(`/dashboard/${subject}/${filteredLesson.bimester.toLowerCase()}/${index}?ano=${filteredLesson.ano}`)}>
                                                             <div className="lesson-title">
                                                                 <GrDocumentText />
                                                                 <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
