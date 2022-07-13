@@ -13,7 +13,7 @@ export default function Bimester() {
     const history = useHistory()
     const { setSelected } = useDashboardStates()
     const { verifyUser, user } = useUserStates()
-    const { subject, bimester } = useParams()
+    const { subject, bimester: bimesterParam } = useParams()
     const { setLessonsAnimation } = useAnimationStates()
 
     useEffect(() => {
@@ -26,21 +26,21 @@ export default function Bimester() {
         }
 
         asyncVerifyUser()
-    })
+    }, [])
 
 
     return (
         <DashboardContainer>
             {            
-                <SideBar preset={user.position}/>
+                <SideBar preset={user?.position}/>
             }
             <div className="dashboard-content">
                 <Header/>
                 <main>
                     <BimesterContent>
                         <div className="bimester-title">
-                            <h2>8° Ano do Ensino Fundamental</h2>
-                            <h3>Bem vindo, Tales!</h3>
+                            <h2>{user?.ano}</h2>
+                            <h3>Bem vindo, {user?.name}!</h3>
                         </div>
                         <div className="bimester-navegation">
                             <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>
@@ -48,24 +48,41 @@ export default function Bimester() {
                                 Voltar
                             </button>
                             <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>{subject}</button>
-                            <button>Bimestre {bimester}</button>
+                            <button>Bimestre {bimesterParam}</button>
                         </div>
 
                         <div className="bimester-content">
                             <ul>
                                 {
-                                    material[0].bimesters.map(bimesterMaterial => (
-                                        bimesterMaterial.bimester === Number(bimester) ? 
-                                            bimesterMaterial.subejects[0][subject].map((lessons, index) => (
-                                                <li key={index}>
-                                                    <div onClick={() => history.push(`/dashboard/${subject}/${bimester}/${index}`)}>
-                                                        <GrDocumentText />
-                                                        <h3>{lessons.title.split(' ').length > 8 ? lessons.title.split(' ').slice(0, 8).join(' ') + '...' : lessons.title}</h3>
-                                                    </div>
-                                                </li>
-                                            )) : 
-                                            null 
-                                    ))
+                                    material.map(({ano, bimesters}) => {
+                                        if (ano === user?.ano) {
+                                            // return bimesters.map(bimesterMaterial => (
+                                            //     bimesterMaterial.bimester === Number(bimester) ? 
+                                            //         bimesterMaterial.subejects[0][subject].map((lessons, index) => (
+                                                        // <li key={index}>
+                                                        //     <div onClick={() => history.push(`/dashboard/${subject}/${bimester}/${index}`)}>
+                                                        //         <GrDocumentText />
+                                                        //         <h3>{lessons.title.split(' ').length > 8 ? lessons.title.split(' ').slice(0, 8).join(' ') + '...' : lessons.title}</h3>
+                                                        //     </div>
+                                                        // </li>
+                                            //         )) : 
+                                            //         null
+                                            //     ))
+                                            return bimesters.map(({bimester, subejects}) => {
+                                                if (bimester === Number(bimesterParam)) {
+                                                    return subejects[0][subject[0].toUpperCase() + subject.slice(1)].map((lessons, index) => (
+                                                        <li key={index}>
+                                                            <div onClick={() => history.push(`/dashboard/${subject}/${bimester}/${index}`)}>
+                                                                <GrDocumentText />
+                                                                <h3>{lessons.title.split(' ').length > 8 ? lessons.title.split(' ').slice(0, 8).join(' ') + '...' : lessons.title}</h3>
+                                                            </div>
+                                                        </li>
+                                                    ))
+                                                }
+                                            })
+
+                                        }
+                                    }) 
                                 }
                             </ul>
                         </div>

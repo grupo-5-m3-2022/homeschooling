@@ -12,19 +12,18 @@ import { useState } from "react"
 
 export default function SideBar({asideFunctions, preset}) {
     const { selected, setSelected, showSideBar, setShowSideBar } = useDashboardStates()
-    const { logOut, user } = useUserStates()
+    const { logOut } = useUserStates()
     const [animation, setAnimation] = useState('go')
     const history = useHistory()
 
-    console.log(user.position)
 
-    if (preset.toLowerCase() === 'estudante') {
+    if (preset?.toLowerCase() === 'estudante') {
         asideFunctions = [
             ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
             ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
         ]
     }
-    else if (preset.toLowerCase() === "professor") {
+    else if (preset?.toLowerCase().includes("professor")) {
         asideFunctions = [
             ["Painel de controle", [[BsFillPeopleFill, "Alunos"],[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
             ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
