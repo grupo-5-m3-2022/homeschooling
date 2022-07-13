@@ -99,6 +99,18 @@ export default function Studants() {
         setModalAddStudant(false)
     }
 
+    function handleRemoveStudant(email) {
+        const filterEmail = studantsList.filter(student => student.students[0].studentEmail !== email)
+        console.log(filterEmail)
+        api.put('/connections', filterEmail, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+        .then((_) => toast.success(`Aluno ${email} removido com sucesso!`))
+        .catch(err => console.log(err))
+    }
+
     return(
         <Container>
             <Header>
@@ -147,7 +159,7 @@ export default function Studants() {
                     <UserEmail>
                         <p>{student.students[0].studentEmail}</p>
                     </UserEmail>
-                    <UserRemove>
+                    <UserRemove onClick={() => handleRemoveStudant(student.students[0].studentEmail)}>
                         <IoPersonRemoveSharp />
                     </UserRemove>
                 </CardStudant>
