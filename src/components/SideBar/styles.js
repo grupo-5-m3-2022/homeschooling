@@ -1,13 +1,4 @@
-import styled, {keyframes} from "styled-components";
-
-const appearFromLeft = keyframes`
-    from{
-        transform: translateX(-300px);
-    }
-    to{
-        transform: translateX(0px);
-    }
-`
+import styled from "styled-components";
 
 export const Aside = styled.aside`
     height: 100%;
