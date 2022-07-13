@@ -10,6 +10,7 @@ import api from "../../services/api"
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { toast } from 'react-toastify'
 
 const customStyles = {
     content: {
@@ -27,7 +28,7 @@ export default function Studants() {
     const token = localStorage.getItem("@token")
     const id = localStorage.getItem("@userId")
     const [studantsList, setStudantsList] = useState([])
-    const length = studantsList?.students?.length || 0
+    const length = studantsList?.length || 0
 
     async function loadStudants() {
         const res = await api.get('/connections', {
@@ -39,7 +40,7 @@ export default function Studants() {
             }
         })
         .then(response => {
-            setStudantsList(response.data[0])
+            setStudantsList(response.data)
         })
         .catch(err => console.log(err))
 
@@ -56,8 +57,37 @@ export default function Studants() {
     })
     const {register, handleSubmit, formState: {errors}} = useForm({resolver: yupResolver(schema)})
 
-    function onSubmit(data) {
-        console.log(data)
+    function onSubmit({email, name}) {
+        const emailAlreadyUsed = studantsList.filter(student => {
+            return student.students[0].studentEmail === email
+        })
+        
+        const newUser = {
+            "professorName": user.name,
+            "professorEmail": user.email,
+            "students": [
+                {
+                    "studentName": name,
+                    "studentEmail": email
+                }
+            ],
+            "userId": id
+        }
+
+        if(emailAlreadyUsed.length === 0) {
+            api.post('/connections', newUser, {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+            .then((_) => {
+                handleCloseModal()
+                toast.success('Aluno(a) adicionado com sucesso!')
+            })
+            .catch(err => console.log(err))
+        } else {
+            toast.error('Email já cadastrado')
+        }
     }
 
     const [modalAddStudant, setModalAddStudant] = useState(false)
@@ -108,14 +138,14 @@ export default function Studants() {
             </Header>
 
             <Body>
-                {studantsList?.students?.map((student, index) => (
+                {studantsList?.map((student, index) => (
                 <CardStudant key={index}>
                     <UserName>
                         <span><FiUser /></span>
-                        <p>{student.studentName}</p>
+                        <p>{student.students[0].studentName}</p>
                     </UserName>
                     <UserEmail>
-                        <p>{student.studentEmail}</p>
+                        <p>{student.students[0].studentEmail}</p>
                     </UserEmail>
                     <UserRemove>
                         <IoPersonRemoveSharp />
