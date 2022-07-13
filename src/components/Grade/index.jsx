@@ -38,6 +38,7 @@ export default function Grade() {
     
     useEffect(() => {
         loadGrades()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [subject])
 
     //professor
@@ -70,15 +71,18 @@ export default function Grade() {
         })
         .then((response) => setGrades(response.data))
         .catch((err)=> console.log(err))
-         
     }
+ 
+
     useEffect(()=>{
         loadStudentGrade()
-    },[student])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [student])
 
     useEffect(() => {
         loadStudents()
         loadStudentGrade()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
     function deleteGrade(id){

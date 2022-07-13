@@ -26,6 +26,7 @@ export default function Bimester() {
         }
 
         asyncVerifyUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 
@@ -67,9 +68,11 @@ export default function Bimester() {
                                                         </li>
                                                     ))
                                                 }
+                                                return null
                                             })
 
                                         }
+                                        return null
                                     }) 
                                 }
                             </ul>

@@ -19,9 +19,12 @@ const customStyles = {
       right: 'auto',
       bottom: 'auto',
       marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
+      transform: 'translate(-50%, -50%)'
     },
-  };
+    overlay: {
+        zIndex: 3
+    }
+};
 
 export default function Studants() {
     const {user} = useUserStates()
@@ -126,7 +129,7 @@ export default function Studants() {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((_) => toast.success(`Aluno(a) ${email} removido com sucesso!`))
+        .then(() => toast.success(`Aluno(a) ${email} removido com sucesso!`))
         .catch(err => console.log(err))
     }
 

@@ -28,12 +28,28 @@ export const LessonsContentDiv = styled.div`
         }
     }
 
+    .lessons-options {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+
+        & > button {
+            margin: 20px;
+            padding: 20px 10px;
+            background-color: #0075FF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+    }
+
     .lessons-filter {
         display: flex;
         gap: 25px;
         font-size: 12px;
         background-color: white;
-        padding: 10px 20px;
+        padding: 15px 20px;
         border-radius: 10px;
         color: #363535;
         width: max-content;

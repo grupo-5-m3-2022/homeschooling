@@ -33,6 +33,7 @@ export default function Article() {
         }
 
         asyncVerifyUser()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
