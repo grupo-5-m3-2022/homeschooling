@@ -15,10 +15,35 @@ export const ContainerCard = styled.div`
     span{
         color: black;
         font-size: 14px;
-        width: 25%;
+        width: 20%;
+    }
+    .scoreMax{
+        width: 5%;
     }
     .score{
-        width: 12.5%;
+        width: 17.5%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .btns{
+        width: 5%;
+        display: flex;
+        button{
+            width: 25px;
+            height: 17px;
+            background-color: white;
+            border: 1px solid white;
+            border-radius: 4px;
+            margin: 0 2px;
+        }
+
+    .delete:hover{
+        background-color: red;
+    }
+    .edit:hover{
+        background-color: yellow;
+    }
     }
 
     @media (max-width: 900px) {
@@ -28,7 +53,7 @@ export const ContainerCard = styled.div`
         
     }
     @media (max-width: 570px) {
-        .max{
+        .scoreMax{
             display: none;
         }    
     }
