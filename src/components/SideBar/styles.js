@@ -67,6 +67,7 @@ export const Aside = styled.aside`
         background-color: #0075FF;
         color: white;
         border: none;
+        border-radius: 5px;
     }
 `;
 

@@ -85,4 +85,13 @@ export const GlobalStyle = createGlobalStyle`
             transform: translateX(-100%);
         }
     }
+
+    @keyframes appearUp {
+        0% {
+            transform: translateY(-100%);
+        }
+        100% {
+            transform: translateY(0);
+        }
+    }
 `;

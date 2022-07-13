@@ -47,14 +47,24 @@ export default function Providers({children}) {
                   'Authorization': `Bearer ${localStorage.getItem("@token")}`
                 }
             })
-            .then(response => {
-                const {ano, email, name, position, professors, alunos} = response.data
-                if (alunos) {
-                    setUser({ano, email, name, position, alunos, logged: true})
-
+            .then(async (response) => {
+                const {ano, email, name, position, professors, id} = response.data
+                if (position.toLowerCase() === 'estudante') {
+                    setUser({ano, email, name, position, professors, id, logged: true})
                 }
-                else {
-                    setUser({ano, email, name, position, professors, logged: true})
+                else if (position.toLowerCase().includes('professor')) {
+                    await api.get(`/connections`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("@token")}`
+                        },
+                        params: {
+                            professorEmail: email
+                        }
+                    })
+                    .then(response => {
+                        const alunos = response.data[0].students
+                        setUser({email, name, position, id, alunos, logged: true})
+                    })
                 }
 
                 return true

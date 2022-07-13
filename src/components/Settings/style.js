@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-
+  animation: appearRight 500ms;
   padding: 1.3rem;
 
   @media (min-width: 1024px) {

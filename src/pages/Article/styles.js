@@ -55,9 +55,14 @@ export const ArticleContent = styled.div`
         font-size: 14px;
 
         div {
+            width: 70%;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
+            align-self: center;
+            background-color: #fefefe;
+            border-radius: 8px;
+            padding: 20px;
         }
     }
 
