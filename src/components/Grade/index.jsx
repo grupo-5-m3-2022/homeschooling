@@ -15,7 +15,7 @@ export default function Grade() {
     const [subject, setSubject] = useState(allSubjects[0])
     const [students, setStudents] = useState([])
     const [student, setStudent] = useState("") // email only
-    const [studentData, setStundentData] = useState({})
+    // const [studentData, setStudentData] = useState({})
 
     function loadGrades(){
         api.get("/grades",{
@@ -32,6 +32,7 @@ export default function Grade() {
     
     useEffect(() => {
         loadGrades()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [subject])
     
     function loadStudents(){
@@ -46,7 +47,7 @@ export default function Grade() {
         .then((response)  => {
             setStudents(response.data[0].students)
             setStudent(response.data[0].students[0].studentEmail)
-            setStundentData(students.filter((aluno)=> aluno.studentEmail === student))
+            // setStudentData(students.filter((aluno)=> aluno.studentEmail === student))
         })
         .catch((err)=> console.log(err))
     }
@@ -63,20 +64,19 @@ export default function Grade() {
         })
         .then((response) => setGrades(response.data))
         .catch((err)=> console.log(err))
-         
-    console.log(student)
     }
  
- console.log(student)
 
     useEffect(()=>{
-        setStundentData(students.filter((aluno)=> aluno.studentEmail === student))
+        // setStudentData(students.filter((aluno)=> aluno.studentEmail === student))
         loadStudentGrade()
-    },[student])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [student])
 
     useEffect(() => {
         loadStudents()
         loadStudentGrade()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
     
 
