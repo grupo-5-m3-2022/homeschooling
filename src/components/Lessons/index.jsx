@@ -1,6 +1,7 @@
 import SearchInput from "../SearchField";
 import { GrTemplate, GrDocumentText } from "react-icons/gr";
-import { LessonsContentDiv } from "./styles";
+import { AiOutlineCloseCircle } from "react-icons/ai"
+import { LessonsContentDiv, ModalBody, ModalHeader, ModalContent } from "./styles";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
 import { useDashboardStates, useUserStates, useAnimationStates } from "../Providers";
@@ -9,6 +10,11 @@ import { BimesterContent } from "../../pages/Bimester/styles"
 import Modal from 'react-modal';
 import material from "../../services/material";
 import api from "../../services/api";
+import { useForm } from 'react-hook-form'
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { toast } from "react-toastify";
+
 
 const customStyles = {
     content: {
@@ -39,9 +45,33 @@ export default function Lessons() {
     const [lessonsProfessor, setLessonsProfessor] = useState('todas')
     const [filteredMaterial, setFilteredMaterial] = useState({})
 
-    useEffect(filterYearProfessor, [yearProfessor])
-    useEffect(filterSubject, [filteredMaterial.bimester, subject])
-    useEffect(filterBimesterProfessor, [filteredMaterial.year, bimesterProfessor])
+    const [, setFormSubject] = useState('')
+    const [, setFormStudent] = useState('')
+
+
+    const schema = yup.object().shape({
+        subject: yup.string().required(),
+        title: yup.string().required(),
+        content: yup.string().required(),
+        studentEmail: yup.string().email().required()
+    })
+
+    const {register, handleSubmit, formState: {errors}} = useForm({resolver: yupResolver(schema)})
+
+    function onSubmit(data) {
+        data = {...data, professorName: user?.name, professorEmail: user?.email, userId: user?.id}
+        api.post('extra_lessons', data, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem("@token")}`
+            }
+        })
+        .then(response => {
+                response.status === 201 && toast.success('Sucesso ao cadastrar nova aula!')
+        })
+        .catch(() => {
+            toast.error('Algo deu errado ao cadastrar nova aula!')
+        })
+    }
 
     function filterYearProfessor() {
         const tempMaterial = {}
@@ -66,6 +96,10 @@ export default function Lessons() {
         tempMaterial.bimester = filteredMaterial?.year?.map(({bimesters}) => bimesters.filter(({bimester}) => ((bimester === Number(bimesterProfessor)) || bimesterProfessor === 'todos')))
         setFilteredMaterial(actual => ({...actual, ...tempMaterial}))
     }
+
+    useEffect(filterYearProfessor, [yearProfessor])
+    useEffect(filterSubject, [filteredMaterial.bimester, subject])
+    useEffect(filterBimesterProfessor, [filteredMaterial.year, bimesterProfessor])
 
     useEffect(() => {
         api.get("extra_lessons", {
@@ -96,11 +130,40 @@ export default function Lessons() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
+    const [modalAddLesson, setModalAddLesson] = useState(false)
+
+    function handleOpenModal() {
+        setModalAddLesson(true)
+    }
+
+    function handleCloseModal() {
+        setModalAddLesson(false)
+    }
 
     return (
         <>
-            <Modal >
+            <Modal ariaHideApp={false} isOpen={modalAddLesson} onRequestClose={handleCloseModal} style={customStyles} >
+                <ModalHeader>
+                    <h4>Cadastrar Aula Extra</h4>
+                    <button onClick={handleCloseModal}><AiOutlineCloseCircle /></button>
+                </ModalHeader>
 
+                <ModalBody>
+                    <ModalContent onSubmit={handleSubmit(onSubmit)}>
+                            {errors?.subject?.message && <span>- {errors.subject.message}</span>}
+                            <SearchInput options={[{valor: "", texto: "Selecione uma matéria"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setFormSubject} register={register} type="subject"/>
+                            {errors?.title?.message && <span>- {errors.title.message}</span>}
+                            <input type="text" placeholder="Titulo" {...register("title")} />
+                            {errors?.content?.message && <span>- {errors.content.message}</span>}
+                            <textarea placeholder="Escreva o conteudo" cols="30" rows="10" {...register("content")}></textarea>
+                            {errors?.studentEmail?.message && <span>- {errors.studentEmail.message}</span>}
+                            <SearchInput options={[{valor: "", texto: "Selecione um estudante"}, ...user?.alunos?.map(aluno => ({valor: aluno.studentEmail, texto: aluno.studentName}))]} optionSetter={setFormStudent} register={register} type="studentEmail"/>
+                            <div>
+                                <button className="btnClose">Cancelar</button>
+                                <button type="submit" className="btnSubmit">Cadastrar</button>
+                            </div>
+                    </ModalContent>
+                </ModalBody>
             </Modal>
 
             <LessonsContentDiv animation={lessonsAnimation}>
@@ -151,7 +214,10 @@ export default function Lessons() {
                             </>
                     }
                 </div>
-                <button>+ Adicionar Conteúdo</button>
+                {
+                    user?.position.toLowerCase().includes("professor") &&
+                        <button onClick={handleOpenModal}>+ Adicionar Conteúdo</button>
+                }
             </div>
             <div>
                 <ul className="lessons-cardList">
@@ -178,51 +244,76 @@ export default function Lessons() {
                     {
                         user?.position.toLowerCase().includes('professor') && (lessonsProfessor === "todas" || lessonsProfessor === 'aulas') && <li>
                             <BimesterContent nopadding>
-                        <div className="bimester-content">
-                            <ul>
-                                {
-                                    filteredMaterial?.lessons?.map((filteredBimesters) => filteredBimesters.map((filteredLesson) => filteredLesson.subejects.map(lesson => {
-                                        if (subject === 'todas') {
-                                            return Object.keys(lesson).map(lessonSubject => (
-                                                lesson[lessonSubject].map((finalLesson, index) => (
-                                                    <li key={index}>
-                                                        <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${lessonSubject.toLowerCase()}/${filteredLesson.bimester}/${index}?ano=${filteredLesson.ano}`)}}>
-                                                            <div className="lesson-title">
-                                                                <GrDocumentText />
-                                                                <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
-                                                            </div>
-                                                            <div className="lesson-moreInfo">
-                                                                <p>Bimestre: {filteredLesson.bimester}</p>
-                                                                <p>Matéria: {lessonSubject}</p>
-                                                            </div>
+                                <div className="bimester-content">
+                                    <ul>
+                                        {
+                                            filteredMaterial?.lessons?.map((filteredBimesters) => filteredBimesters.map((filteredLesson) => filteredLesson.subejects.map(lesson => {
+                                                if (subject === 'todas') {
+                                                    return Object.keys(lesson).map(lessonSubject => (
+                                                        lesson[lessonSubject].map((finalLesson, index) => (
+                                                            <li key={index}>
+                                                                <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${lessonSubject.toLowerCase()}/${filteredLesson.bimester}/${index}?ano=${filteredLesson.ano}`)}}>
+                                                                    <div className="lesson-title">
+                                                                        <GrDocumentText />
+                                                                        <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
+                                                                    </div>
+                                                                    <div className="lesson-moreInfo">
+                                                                        <p>Bimestre: {filteredLesson.bimester}</p>
+                                                                        <p>Matéria: {lessonSubject}</p>
+                                                                    </div>
 
-                                                        </div>
-                                                    </li>
-                                                ))))
-                                        }
-                                        else {
-                                            return lesson[subject].map((finalLesson, index) => (
-                                                    <li key={index}>
-                                                        <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${subject}/${filteredLesson.bimester.toLowerCase()}/${index}?ano=${filteredLesson.ano}`)}}>
-                                                            <div className="lesson-title">
-                                                                <GrDocumentText />
-                                                                <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
-                                                            </div>
-                                                            <div className="lesson-moreInfo">
-                                                                <p>Bimestre: {filteredLesson.bimester}</p>
-                                                                <p>Matéria: {subject}</p>
-                                                            </div>
+                                                                </div>
+                                                            </li>
+                                                        ))))
+                                                }
+                                                else {
+                                                    return lesson[subject].map((finalLesson, index) => (
+                                                            <li key={index}>
+                                                                <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${subject}/${filteredLesson.bimester.toLowerCase()}/${index}?ano=${filteredLesson.ano}`)}}>
+                                                                    <div className="lesson-title">
+                                                                        <GrDocumentText />
+                                                                        <h3>{finalLesson.title.split(' ').length > 8 ? finalLesson.title.split(' ').slice(0, 8).join(' ') + '...' : finalLesson.title}</h3>
+                                                                    </div>
+                                                                    <div className="lesson-moreInfo">
+                                                                        <p>Bimestre: {filteredLesson.bimester}</p>
+                                                                        <p>Matéria: {subject}</p>
+                                                                    </div>
 
-                                                        </div>
-                                                    </li>
-                                                ))
+                                                                </div>
+                                                            </li>
+                                                        ))
+                                                }
+                                            })))
                                         }
-                                    })))
-                                }
-                            </ul>
-                        </div>
-                    </BimesterContent>
-                    </li>                    }
+                                    </ul>
+                                </div>
+                            </BimesterContent>
+                        </li>                   
+                    }
+                    {
+                        user?.position.toLowerCase().includes('professor') && (lessonsProfessor === "todas" || lessonsProfessor === 'extras') && <li>
+                            <BimesterContent nopadding>
+                                <div className="bimester-content">
+                                    <ul>
+                                        {
+                                            filteredMaterial?.extraLessons?.map((extraLesson, index) => <li>
+                                                <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${subject}/${extraLesson.bimester.toLowerCase()}/${index}`)}}>
+                                                    <div className="lesson-title">
+                                                        <GrDocumentText />
+                                                        <h3>{extraLesson.title.split(' ').length > 8 ? extraLesson.title.split(' ').slice(0, 8).join(' ') + '...' : extraLesson.title}</h3>
+                                                    </div>
+                                                    <div className="lesson-moreInfo">
+                                                        <p>Bimestre: {1}</p>
+                                                        <p>Matéria: {extraLesson.subject}</p>
+                                                    </div>
+                                                </div>                                                
+                                            </li>)
+                                        }
+                                    </ul>
+                                </div>
+                            </BimesterContent>
+                        </li>                       
+                    }
                 </ul>
             </div>
         </LessonsContentDiv>

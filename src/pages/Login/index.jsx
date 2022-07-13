@@ -18,7 +18,7 @@ import { useUserStates } from "../../components/Providers";
 
 export default function Login() {
   const history = useHistory();
-  const {setUser} = useUserStates()
+  const { verifyUser } = useUserStates()
 
   const schema = yup.object({
     email: yup.string().required("Campo obrigatório").email("Email inválido"),
@@ -40,8 +40,7 @@ export default function Login() {
       .then((response) => {
         localStorage.setItem("@token", response.data.accessToken);
         localStorage.setItem("@userId", response.data.user.id);
-        response.data.user.logged = true
-        setUser(response.data.user)
+        verifyUser()
 
         toast.success("Login efetuado com sucesso!");
 

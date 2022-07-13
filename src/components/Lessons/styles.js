@@ -101,3 +101,90 @@ export const LessonsContentDiv = styled.div`
         }
     }
 `
+export const ModalHeader = styled.div`
+    width: 300px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background-color: white;
+    z-index: 4;
+
+    button {
+        border: none;
+        background-color: transparent;
+        font-size: 28px;
+    }
+`
+
+export const ModalBody = styled.div`
+    width: 300px;
+    border: 1px solid #CCCCCC;
+    border-radius: 5px;
+`
+
+export const ModalContent = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    
+    span {
+        margin-top: 5px;
+        font-size: 12px;
+        color: red;
+    }
+
+    button {
+        margin: 5px;
+        height: 30px;
+        width: 80px;
+        border-radius: 10px;
+        border: none;
+        color: #FFFFFF;
+        font-weight: 600;
+    }
+
+    .btnSubmit {
+            background-color: #0075FF;
+        }
+
+    .btnClose {
+        background-color: #fc204c;
+    }
+
+    textarea {
+        padding: 5px;
+        width: 100%;
+        background-color: #E6E6E6;
+        border: none;
+        font-weight: 600;
+        border-radius: 10px;
+    }
+
+    select {
+        width: 100%;
+        background-color: #E6E6E6;
+        border: none;
+        font-weight: 600;
+    }
+
+    input {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        background-color: #E6E6E6;
+        font-weight: 600;
+    }
+
+    input:focus {
+        outline: 2px solid black;
+    }
+
+    input:-webkit-autofill {
+        box-shadow: 0 0 0px 1000px #E6E6E6 inset;
+    } 
+`
