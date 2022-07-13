@@ -4,6 +4,7 @@ import Lessons from "../../components/Lessons"
 import Grade from "../../components/Grade"
 import Help from "../../components/Help"
 import Settings from "../../components/Settings"
+import Studants from "../../components/Studants"
 import Header from "../../components/Header"
 import { useDashboardStates, useUserStates } from "../../components/Providers"
 import { useEffect } from "react"
@@ -42,6 +43,8 @@ export default function Dashboard() {
                             <Settings /> :
                         selected === 'ajuda' ?
                             <Help /> :
+                        selected === 'alunos' ?
+                            <Studants /> :
                         null
                     }
                 </main>

@@ -28,17 +28,10 @@ export default function SignUp() {
     const [inputPosition, setInputPosition] = useState("")
     
     function change(e) {
-        let input = ''
-        if(e.target.value === '0') {
-            input = 'Estudante'
-        } else {
-            input = 'Professor'
-        }
-        setInputPosition(input)
+        setInputPosition(e.target.value)
     }
     
     function onSubmit({name, email, password, position, ano}) {
-        position = inputPosition;
         const grade = []
         let user = {name, email, password, position, ano, grade}
 
@@ -86,10 +79,10 @@ export default function SignUp() {
                         {errors?.position?.message && <span>- {errors.position.message}</span>}
                         <InputContainer>
                             <AiOutlineInfoCircle />
-                            <select {...register("position")} onChange={e => change(e)}>
+                            <select {...register("position")} onChange={change}>
                                 <option selected disabled value="">Selecione uma opção</option>
                                 {
-                                    Pos.map((position, key) => <option key={key} value={key}>{position}</option>)
+                                    Pos.map((position, key) => <option key={key} value={position}>{position}</option>)
                                 }
                             </select>
                         </InputContainer>
