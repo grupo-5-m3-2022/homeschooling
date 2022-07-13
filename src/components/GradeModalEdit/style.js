@@ -18,6 +18,7 @@ export const Container = styled.div`
     background-color: white;
     border: 1px solid black;
     border-radius: 8px;
+    animation: appearRight 400ms;
 
     form{
         width: 100%;

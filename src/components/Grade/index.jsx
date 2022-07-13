@@ -33,8 +33,6 @@ export default function Grade() {
         .then((response)=> (setGrades(response.data.filter((grade) => grade.subject === subject))))
     }
 
-    console.log(grades)
-
     
     useEffect(() => {
         loadGrades()
