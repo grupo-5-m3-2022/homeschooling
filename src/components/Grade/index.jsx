@@ -21,7 +21,7 @@ export default function Grade() {
     const [modal, setModal] = useState(false)
     const [modalEdit, setModalEdit] = useState(false)
 
-    function loadGrades(){
+   function loadGrades(){
         api.get("/grades",{
             headers:{
                 Authorization: `Bearer ${token}`
@@ -30,15 +30,22 @@ export default function Grade() {
                 studentEmail: user.email
             }
         })
-        .then((response)=> (setGrades(response.data.filter((grade) => grade.subject === subject))))
+        .then((response)=> {
+            const filteredGrade = response.data.filter((grade) => grade.subject === subject)
+            console.log(filteredGrade)
+            setGrades(filteredGrade)
+            console.log(user.email)
+        })
     }
 
-    console.log(grades)
-
+    if(user.position === "Estudante"){
+        loadGrades()
+    }
     
     useEffect(() => {
         loadGrades()
     }, [subject])
+
 
     //professor
     
@@ -104,9 +111,8 @@ export default function Grade() {
         {user.position === "Estudante" ?
         <ContainerGrade>
             <ContainerInfos>
-                {user.position === 'Estudante' && <h3>{user.ano}</h3>}
                 <p>Bem vindo, {user.name}</p>
-                <SearchInput options={allSubjects.map(subject => ({value: subject, texto: subject}))} optionSetter={setSubject}/>
+                <SearchInput options={allSubjects.map(subject => ({valor: subject, texto: subject}))} optionSetter={setSubject}/>
             </ContainerInfos>
             <GradesTable>
             <div>
