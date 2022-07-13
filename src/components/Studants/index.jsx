@@ -28,13 +28,13 @@ export default function Studants() {
     const token = localStorage.getItem("@token")
     const id = localStorage.getItem("@userId")
     const [studantsList, setStudantsList] = useState([])
-    const length = studantsList?.length || 0
+    const length = studantsList[0]?.students?.length || 0
 
-    async function loadStudants() {
-        const res = await api.get('/connections', {
+    function loadStudants() {
+        const res = api.get(`/connections`, {
             headers: {
                 Authorization: `Bearer ${token}`
-            }, 
+            },
             params: {
                 professorEmail: user.email
             }
@@ -47,6 +47,7 @@ export default function Studants() {
         return res
     }
 
+
     useEffect(() => {
         loadStudants()
     })
@@ -58,36 +59,50 @@ export default function Studants() {
     const {register, handleSubmit, formState: {errors}} = useForm({resolver: yupResolver(schema)})
 
     function onSubmit({email, name}) {
-        const emailAlreadyUsed = studantsList.filter(student => {
-            return student.students[0].studentEmail === email
-        })
-        
-        const newUser = {
-            "professorName": user.name,
-            "professorEmail": user.email,
-            "students": [
-                {
-                    "studentName": name,
-                    "studentEmail": email
-                }
-            ],
-            "userId": id
-        }
 
-        if(emailAlreadyUsed.length === 0) {
-            api.post('/connections', newUser, {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            })
-            .then((_) => {
-                handleCloseModal()
-                toast.success('Aluno(a) adicionado com sucesso!')
-            })
-            .catch(err => console.log(err))
-        } else {
-            toast.error('Email já cadastrado')
-        }
+            if(studantsList.length === 0) {
+                api.post('/connections', {
+                    "professorName": user.name,
+                    "professorEmail": user.email,
+                    "students": [ 
+                        {
+                            "studentName": name,
+                            "studentEmail": email
+                        }
+                    ],
+                    "userId": id
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((_) => {
+                    handleCloseModal()
+                    toast.success('Aluno(a) adicionado com sucesso!')
+                })
+                .catch(err => console.log(err))
+            } else {
+                api.put(`/connections/${id}`, {
+                    "professorName": user.name,
+                    "professorEmail": user.email,
+                    "students": [...studantsList[0]?.students, 
+                        {
+                            "studentName": name,
+                            "studentEmail": email
+                        }
+                    ],
+                    "userId": id
+                }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                .then((_) => {
+                    handleCloseModal()
+                    toast.success('Aluno(a) adicionado com sucesso!')
+                })
+                .catch(err => console.log(err))
+            }
     }
 
     const [modalAddStudant, setModalAddStudant] = useState(false)
@@ -100,14 +115,18 @@ export default function Studants() {
     }
 
     function handleRemoveStudant(email) {
-        const filterEmail = studantsList.filter(student => student.students[0].studentEmail !== email)
-        console.log(filterEmail)
-        api.put('/connections', filterEmail, {
+        const filter = studantsList[0].students.filter(student => student.studentEmail !== email)
+        api.put(`/connections/${id}`, {
+            "professorName": user.name,
+            "professorEmail": user.email,
+            "students": [...filter],
+            "userId": id, 
+        }, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
         })
-        .then((_) => toast.success(`Aluno ${email} removido com sucesso!`))
+        .then((_) => toast.success(`Aluno(a) ${email} removido com sucesso!`))
         .catch(err => console.log(err))
     }
 
@@ -150,16 +169,16 @@ export default function Studants() {
             </Header>
 
             <Body>
-                {studantsList?.map((student, index) => (
+                {studantsList[0]?.students?.map((student, index) => (
                 <CardStudant key={index}>
                     <UserName>
                         <span><FiUser /></span>
-                        <p>{student.students[0].studentName}</p>
+                        <p>{student.studentName}</p>
                     </UserName>
                     <UserEmail>
-                        <p>{student.students[0].studentEmail}</p>
+                        <p>{student.studentEmail}</p>
                     </UserEmail>
-                    <UserRemove onClick={() => handleRemoveStudant(student.students[0].studentEmail)}>
+                    <UserRemove onClick={() => handleRemoveStudant(student.studentEmail)}>
                         <IoPersonRemoveSharp />
                     </UserRemove>
                 </CardStudant>
