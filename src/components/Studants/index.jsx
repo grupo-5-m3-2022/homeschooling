@@ -22,6 +22,7 @@ const customStyles = {
       transform: 'translate(-50%, -50%)'
     },
     overlay: {
+        animation: 'appearUp 400ms',
         zIndex: 3
     }
 };
