@@ -107,7 +107,7 @@ export default function Studants() {
                 .then((_) => {
                     api.get(`/connections`, {
                         headers: {
-                            Authorization: `Bearer ${localStorage.getItem("@token")}`
+                            Authorization: `Bearer ${token}`
                         },
                         params: {
                             professorEmail: user.email
