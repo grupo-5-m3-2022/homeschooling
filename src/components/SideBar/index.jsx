@@ -20,13 +20,13 @@ export default function SideBar({asideFunctions, preset}) {
     if (preset?.toLowerCase() === 'estudante') {
         asideFunctions = [
             ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
-            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
+            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Sobre"]]]
         ]
     }
     else if (preset?.toLowerCase().includes("professor")) {
         asideFunctions = [
             ["Painel de controle", [[BsFillPeopleFill, "Alunos"],[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
-            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
+            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Sobre"]]]
         ]
     }
 

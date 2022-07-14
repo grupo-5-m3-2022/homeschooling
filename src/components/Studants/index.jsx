@@ -12,28 +12,30 @@ import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from 'react-toastify'
 
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)'
-    },
-    overlay: {
-        animation: 'appearUp 400ms',
-        zIndex: 3
-    }
-};
-
 export default function Studants() {
     const {user} = useUserStates()
     const token = localStorage.getItem("@token")
     const id = localStorage.getItem("@userId")
     const [studantsList, setStudantsList] = useState([])
     const length = studantsList[0]?.students?.length || 0
+    const [modalAnimation, setModalAnimation] = useState('appearUp')
 
+    const customStyles = {
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)'
+        },
+        overlay: {
+            animation: `${modalAnimation} 400ms`,
+            opacity: `${modalAnimation === 'hideUp' ? 0 : 1}`,
+            zIndex: 3
+        }
+    };
+    
     function loadStudants() {
         const res = api.get(`/connections`, {
             headers: {
@@ -115,6 +117,7 @@ export default function Studants() {
     }
 
     function handleCloseModal() {
+        setModalAnimation('hideUp')
         setModalAddStudant(false)
     }
 
@@ -151,7 +154,7 @@ export default function Studants() {
                     <button onClick={handleOpenModal}><span>+</span> Adicionar Aluno</button>
                 </ButtonContainer>
 
-                <Modal ariaHideApp={false} isOpen={modalAddStudant} onRequestClose={handleCloseModal} style={customStyles}>
+                <Modal closeTimeoutMS={500} ariaHideApp={false} isOpen={modalAddStudant} onRequestClose={handleCloseModal} style={customStyles} onAfterClose={() => {setModalAnimation('appearUp')}}>
                     <ModalHeader>
                         <h4>Cadastrar Aluno</h4>
                         <button onClick={handleCloseModal}><AiOutlineCloseCircle /></button>

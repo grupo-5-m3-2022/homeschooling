@@ -1,4 +1,4 @@
-import { Container, ContainerForm, ContainerInput, Header } from "./style"
+import { Container, ContainerForm, ContainerInput, Header, ModalBackground } from "./style"
 import { FaTimes } from "react-icons/fa"    
 import * as yup from "yup"
 import { yupResolver } from "@hookform/resolvers/yup"
@@ -8,13 +8,15 @@ import { useUserStates } from "../Providers"
 import { toast } from "react-toastify"
 import Select from "../Select"
 import material from "../../services/material"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 
-function GradeModal({setModal, token, loadStudentGrade}){
+export default function GradeModal({setModal, token, loadStudentGrade}){
     const {user} = useUserStates()
     const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
     const [subject, setSubject] = useState(allSubjects[0])
+    const [modalAnimation, setModalAnimation] = useState('appearUp')
+    const modalBackground = useRef()
 
     const schema = yup.object().shape({
         name: yup.string().required("Campo obrigatório"),
@@ -25,6 +27,19 @@ function GradeModal({setModal, token, loadStudentGrade}){
         date: yup.string().required("Campo obrigatório"),
     })
 
+    useEffect(() => {
+        function KeyWatcher (Event){
+            if (Event.key === "Escape") {
+                handleModalClose()
+            }
+        }
+
+        window.addEventListener("keyup", KeyWatcher)
+        return () => {
+            window.removeEventListener("keyup", KeyWatcher)
+        }
+    })
+
     const {
         register,
         handleSubmit,
@@ -33,7 +48,10 @@ function GradeModal({setModal, token, loadStudentGrade}){
         resolver: yupResolver(schema)
     })
 
-    console.log(errors)
+    function handleModalClose() {
+        setModalAnimation('hideUp')
+    }
+
     function onSubmit(grade){
         const {
             name,
@@ -62,24 +80,22 @@ function GradeModal({setModal, token, loadStudentGrade}){
         })
         .then((_) => {
             toast.success("Nota adicionada com sucesso!")
-            setModal(false)
+            handleModalClose()
         })
         .then(() => loadStudentGrade())
         .catch((err)=>{
             toast.error("Ops, algo deu errado")
-            console.log(err)
         })
 
     }
 
     
     return(
-    <>
-    
+        <ModalBackground ref={modalBackground} onClick={Event => {if (Event.target === modalBackground.current) {handleModalClose()}}} modalAnimation={modalAnimation} onAnimationEnd={() => modalAnimation === 'hideUp' ? setModal(false) : ""}>
             <Container>
             <Header>
             <p>Lançar Nota</p>
-            <button onClick={()=> setModal(false)}><FaTimes/></button>
+            <button onClick={handleModalClose}><FaTimes/></button>
             </Header>
             <form onSubmit={handleSubmit(onSubmit)}>
             <ContainerForm>
@@ -112,8 +128,6 @@ function GradeModal({setModal, token, loadStudentGrade}){
             </ContainerForm>
             </form>
         </Container>
-    </>
-    )
+        </ModalBackground>
+   )
 }
-
-export default GradeModal

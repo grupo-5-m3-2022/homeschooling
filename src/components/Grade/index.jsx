@@ -32,9 +32,7 @@ export default function Grade() {
         })
         .then((response)=> {
             const filteredGrade = response.data.filter((grade) => grade.subject === subject)
-            console.log(filteredGrade)
             setGrades(filteredGrade)
-            console.log(user.email)
         })
     }
 

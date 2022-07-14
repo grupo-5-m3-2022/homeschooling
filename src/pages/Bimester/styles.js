@@ -56,6 +56,24 @@ export const BimesterContent = styled.div`
             gap: 25px;
         }
 
+        .bimester-info {
+            background-color: white;
+            font-size: 12px;
+            cursor: pointer;
+
+            h3 {
+                font-size: 14px;
+                font-weight: 700;
+            }
+
+            div {
+                padding: 20px 30px;
+                display: flex;
+                gap: 25px;
+
+            }
+        }
+
         .lesson-info {
             display: flex;
             flex-direction: column;

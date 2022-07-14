@@ -2,7 +2,7 @@ import { DashboardContainer } from "./styles"
 import SideBar from "../../components/SideBar"
 import Lessons from "../../components/Lessons"
 import Grade from "../../components/Grade"
-import Help from "../../components/Help"
+import About from "../../components/About"
 import Settings from "../../components/Settings"
 import Studants from "../../components/Studants"
 import Header from "../../components/Header"
@@ -42,7 +42,7 @@ export default function Dashboard() {
                         selected === 'configurações' ?
                             <Settings /> :
                         selected === 'ajuda' ?
-                            <Help /> :
+                            <About /> :
                         selected === 'alunos' ?
                             <Studants /> :
                         null

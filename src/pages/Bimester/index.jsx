@@ -1,6 +1,6 @@
 import { useParams, useHistory } from "react-router-dom";
 import { RiArrowLeftSLine } from "react-icons/ri"
-import { DashboardContainer } from "../dashboard/styles";
+import { DashboardContainer } from "../Dashboard/styles";
 import { BimesterContent } from "./styles";
 import { GrDocumentText } from "react-icons/gr"
 import material from "../../services/material";
@@ -60,7 +60,7 @@ export default function Bimester() {
                                             return bimesters.map(({bimester, subejects}) => {
                                                 if (bimester === Number(bimesterParam)) {
                                                     return subejects[0][subject[0].toUpperCase() + subject.slice(1)].map((lessons, index) => (
-                                                        <li key={index}>
+                                                        <li key={index} className="bimester-info">
                                                             <div onClick={() => history.push(`/dashboard/${subject}/${bimester}/${index}`)}>
                                                                 <GrDocumentText />
                                                                 <h3>{lessons.title.split(' ').length > 8 ? lessons.title.split(' ').slice(0, 8).join(' ') + '...' : lessons.title}</h3>

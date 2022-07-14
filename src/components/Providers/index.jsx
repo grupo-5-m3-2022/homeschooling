@@ -79,6 +79,7 @@ export default function Providers({children}) {
 
     function logOut() {
         localStorage.clear()
+        setUser({})
         history.push('/')
     }
     

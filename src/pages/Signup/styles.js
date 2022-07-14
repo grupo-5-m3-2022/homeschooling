@@ -112,7 +112,6 @@ export const InputContainer = styled.div`
     input {
         width: 100%;
         border-radius: 50px;
-        height: 100%;
         border: none;
         background-color: #E6E6E6;
         font-weight: 600;

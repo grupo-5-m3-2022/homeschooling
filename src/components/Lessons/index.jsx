@@ -16,34 +16,36 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { toast } from "react-toastify";
 
 
-const customStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)'
-    },
-    overlay: {
-        zIndex: 3
-    }
-};
-
-
 export default function Lessons() {
     const history = useHistory();
     const allSubjects = [...new Set(material[0].bimesters.map(bimester => (Object.keys(...bimester.subejects))).flat())]
 
     const { setSelected } = useDashboardStates()
     const { user } = useUserStates()
+    const [modalAnimation, setModalAnimation] = useState('appearUp')
 
     const { lessonsAnimation, setLessonsAnimation } = useAnimationStates()
     const [yearProfessor, setYearProfessor] = useState("todos")
-    const [subject, setSubject] = useState('todas');
+    const [subject, setSubject] = useState(user?.position?.toLowerCase().includes("professor") ? "todas" : allSubjects[0]);
     const [bimesterProfessor, setBimesterProfessor] = useState('todos')
     const [lessonsProfessor, setLessonsProfessor] = useState('todas')
     const [filteredMaterial, setFilteredMaterial] = useState({})
+
+    const customStyles = {
+        content: {
+          top: '50%',
+          left: '50%',
+          right: 'auto',
+          bottom: 'auto',
+          marginRight: '-50%',
+          transform: 'translate(-50%, -50%)'
+        },
+        overlay: {
+            animation: `${modalAnimation} 400ms`,
+            opacity: `${modalAnimation === 'hideUp' ? 0 : 1}`,
+            zIndex: 3
+        }
+    };    
 
     const [, setFormSubject] = useState('')
     const [, setFormStudent] = useState('')
@@ -67,6 +69,7 @@ export default function Lessons() {
         })
         .then(response => {
                 response.status === 201 && toast.success('Sucesso ao cadastrar nova aula!')
+                handleCloseModal()
         })
         .catch(() => {
             toast.error('Algo deu errado ao cadastrar nova aula!')
@@ -117,7 +120,7 @@ export default function Lessons() {
                         }
                     }
                 }
-                else {
+                else if (user?.email === lesson.studentEmail) {
                     tempLessons.push(lesson)
                 }
             }
@@ -142,13 +145,14 @@ export default function Lessons() {
     }
 
     function handleCloseModal() {
+        setModalAnimation('hideUp')
         setModalAddLesson(false)
     }
 
     return (
         <>
             {            
-                user?.position?.toLowerCase().includes('professor') && <Modal ariaHideApp={false} isOpen={modalAddLesson} onRequestClose={handleCloseModal} style={customStyles} >
+                user?.position?.toLowerCase().includes('professor') && <Modal closeTimeoutMS={500} ariaHideApp={false} isOpen={modalAddLesson} onRequestClose={handleCloseModal} style={customStyles} onAfterClose={() => {setModalAnimation('appearUp')}}>
                     <ModalHeader>
                         <h4>Cadastrar Aula Extra</h4>
                         <button onClick={handleCloseModal}><AiOutlineCloseCircle /></button>
@@ -165,7 +169,7 @@ export default function Lessons() {
                                 {errors?.studentEmail?.message && <span>- {errors.studentEmail.message}</span>}
                                 <SearchInput options={[{valor: "", texto: "Selecione um estudante"}, ...user?.alunos?.map(aluno => ({valor: aluno.studentEmail, texto: aluno.studentName}))]} optionSetter={setFormStudent} register={register} type="studentEmail"/>
                                 <div>
-                                    <button className="btnClose">Cancelar</button>
+                                    <button className="btnClose" onClick={handleCloseModal}>Cancelar</button>
                                     <button type="submit" className="btnSubmit">Cadastrar</button>
                                 </div>
                         </ModalContent>
@@ -180,10 +184,16 @@ export default function Lessons() {
                 <div className="lessons-options">
                     <div className="lessons-filter">
                         {
-                            user?.position.toLowerCase() === "estudante" && <div>
+                            user?.position.toLowerCase() === "estudante" && <>
+                                <div>
                                     <p>Filtrar por matéria:</p>
                                     <SearchInput options={allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))} optionSetter={setSubject}/>
                                 </div>
+                                <div>
+                                    <p>Filtrar por aula:</p>
+                                    <SearchInput options={[{valor: "todas", texto: "Todas"}, {valor: "aulas", texto: "Aulas"}, {valor: "extras", texto: "Aulas Extras"}]} optionSetter={setLessonsProfessor}/>
+                                </div>
+                            </>
                         }
                         {
                             user?.position.toLowerCase().includes("professor") && <>
@@ -207,7 +217,7 @@ export default function Lessons() {
                                 </div>
                                 <div>
                                     <p>Filtrar por matéria:</p>
-                                    <SearchInput options={[{valor: "todas", texto: "Todos"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setSubject}/>
+                                    <SearchInput options={[{valor: "todas", texto: "Todas"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setSubject}/>
                                 </div>
                                 <div>
                                     <p>Filtrar por bimestre:</p>
@@ -228,7 +238,7 @@ export default function Lessons() {
             <div>
                 <ul className="lessons-cardList">
                     {
-                        user?.position.toLowerCase() === "estudante" && material.map(({ano, bimesters}) => {
+                        user?.position.toLowerCase() === "estudante" && (lessonsProfessor === "todas" || lessonsProfessor === 'aulas') && material.map(({ano, bimesters}) => {
                             if (ano === user?.ano) {
                                 return bimesters.map((bimester, index) => (
                                     Object.keys(...bimester.subejects).includes(subject) && <li key={index}>
@@ -297,19 +307,18 @@ export default function Lessons() {
                         </li>                   
                     }
                     {
-                        user?.position.toLowerCase().includes('professor') && (lessonsProfessor === "todas" || lessonsProfessor === 'extras') && <li>
+                        (lessonsProfessor === "todas" || lessonsProfessor === 'extras') && <li>
                             <BimesterContent nopadding>
                                 <div className="bimester-content">
                                     <ul>
                                         {
-                                            filteredMaterial?.extraLessons?.map((extraLesson, index) => <li>
-                                                <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${subject}/${extraLesson.bimester.toLowerCase()}/${index}`)}}>
+                                            filteredMaterial?.extraLessons?.map((extraLesson, index) => <li key={index}>
+                                                <div className="lesson-info" onClick={() => {setSelected("article"); history.push(`/dashboard/${extraLesson.subject}/null/${index}?extra=true`)}}>
                                                     <div className="lesson-title">
                                                         <GrDocumentText />
                                                         <h3>{extraLesson.title.split(' ').length > 8 ? extraLesson.title.split(' ').slice(0, 8).join(' ') + '...' : extraLesson.title}</h3>
                                                     </div>
                                                     <div className="lesson-moreInfo">
-                                                        <p>Bimestre: {1}</p>
                                                         <p>Matéria: {extraLesson.subject}</p>
                                                     </div>
                                                 </div>                                                
