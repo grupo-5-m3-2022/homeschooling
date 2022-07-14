@@ -110,10 +110,15 @@ export default function Lessons() {
         .then(response => {
             const tempLessons = []
             for (const lesson of response.data) {
-                for (const student of user.alunos) {
-                    if (lesson.studentEmail === student.studentEmail) {
-                        tempLessons.push(lesson)
+                if (user?.position.toLowerCase().includes('professor')) {
+                    for (const student of user.alunos) {
+                        if (lesson.studentEmail === student.studentEmail) {
+                            tempLessons.push(lesson)
+                        }
                     }
+                }
+                else {
+                    tempLessons.push(lesson)
                 }
             }
             setFilteredMaterial(actual => ({...actual, extraLessons: tempLessons}))
@@ -142,30 +147,31 @@ export default function Lessons() {
 
     return (
         <>
-            <Modal ariaHideApp={false} isOpen={modalAddLesson} onRequestClose={handleCloseModal} style={customStyles} >
-                <ModalHeader>
-                    <h4>Cadastrar Aula Extra</h4>
-                    <button onClick={handleCloseModal}><AiOutlineCloseCircle /></button>
-                </ModalHeader>
+            {            
+                user?.position?.toLowerCase().includes('professor') && <Modal ariaHideApp={false} isOpen={modalAddLesson} onRequestClose={handleCloseModal} style={customStyles} >
+                    <ModalHeader>
+                        <h4>Cadastrar Aula Extra</h4>
+                        <button onClick={handleCloseModal}><AiOutlineCloseCircle /></button>
+                    </ModalHeader>
 
-                <ModalBody>
-                    <ModalContent onSubmit={handleSubmit(onSubmit)}>
-                            {errors?.subject?.message && <span>- {errors.subject.message}</span>}
-                            <SearchInput options={[{valor: "", texto: "Selecione uma matéria"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setFormSubject} register={register} type="subject"/>
-                            {errors?.title?.message && <span>- {errors.title.message}</span>}
-                            <input type="text" placeholder="Titulo" {...register("title")} />
-                            {errors?.content?.message && <span>- {errors.content.message}</span>}
-                            <textarea placeholder="Escreva o conteudo" cols="30" rows="10" {...register("content")}></textarea>
-                            {errors?.studentEmail?.message && <span>- {errors.studentEmail.message}</span>}
-                            <SearchInput options={[{valor: "", texto: "Selecione um estudante"}, ...user?.alunos?.map(aluno => ({valor: aluno.studentEmail, texto: aluno.studentName}))]} optionSetter={setFormStudent} register={register} type="studentEmail"/>
-                            <div>
-                                <button className="btnClose">Cancelar</button>
-                                <button type="submit" className="btnSubmit">Cadastrar</button>
-                            </div>
-                    </ModalContent>
-                </ModalBody>
-            </Modal>
-
+                    <ModalBody>
+                        <ModalContent onSubmit={handleSubmit(onSubmit)}>
+                                {errors?.subject?.message && <span>- {errors.subject.message}</span>}
+                                <SearchInput options={[{valor: "", texto: "Selecione uma matéria"}, ...allSubjects.map(subjectMap => ({valor: subjectMap, texto: subjectMap}))]} optionSetter={setFormSubject} register={register} type="subject"/>
+                                {errors?.title?.message && <span>- {errors.title.message}</span>}
+                                <input type="text" placeholder="Titulo" {...register("title")} />
+                                {errors?.content?.message && <span>- {errors.content.message}</span>}
+                                <textarea placeholder="Escreva o conteudo" cols="30" rows="10" {...register("content")}></textarea>
+                                {errors?.studentEmail?.message && <span>- {errors.studentEmail.message}</span>}
+                                <SearchInput options={[{valor: "", texto: "Selecione um estudante"}, ...user?.alunos?.map(aluno => ({valor: aluno.studentEmail, texto: aluno.studentName}))]} optionSetter={setFormStudent} register={register} type="studentEmail"/>
+                                <div>
+                                    <button className="btnClose">Cancelar</button>
+                                    <button type="submit" className="btnSubmit">Cadastrar</button>
+                                </div>
+                        </ModalContent>
+                    </ModalBody>
+                </Modal>
+            }
             <LessonsContentDiv animation={lessonsAnimation}>
                 <div className="lessons-title">
                     {user.position === 'Estudante' && <h2>{user?.ano}</h2>}
