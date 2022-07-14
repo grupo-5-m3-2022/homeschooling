@@ -63,7 +63,7 @@ export default function Providers({children}) {
                     })
                     .then(response => {
                         console.log(response)
-                        const alunos = response.data[0].students || response.data
+                        const alunos = response.data.length > 0 ? response.data[0].students : response.data
                         setUser({email, name, position, id, alunos, logged: true})
                     })
                 }
