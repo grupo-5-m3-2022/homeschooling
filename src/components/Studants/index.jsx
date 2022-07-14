@@ -19,6 +19,7 @@ export default function Studants() {
     const [studantsList, setStudantsList] = useState([])
     const length = studantsList[0]?.students?.length || 0
     const [modalAnimation, setModalAnimation] = useState('appearUp')
+    const { setUser } = useUserStates()
 
     const customStyles = {
         content: {
@@ -104,7 +105,19 @@ export default function Studants() {
                     }
                 })
                 .then((_) => {
-                    handleCloseModal()
+                    api.get(`/connections`, {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem("@token")}`
+                        },
+                        params: {
+                            professorEmail: user.email
+                        }
+                    })
+                    .then(response => {
+                        const {email, name, position, id} = response.data
+                        const alunos = response.data.length > 0 ? response.data[0].students : response.data
+                        setUser({email, name, position, id, alunos, logged: true})
+                    })
                     toast.success('Aluno(a) adicionado com sucesso!')
                 })
                 .catch(err => console.log(err))
