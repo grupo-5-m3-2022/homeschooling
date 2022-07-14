@@ -41,7 +41,7 @@ export default function Dashboard() {
                             <Grade /> :
                         selected === 'configurações' ?
                             <Settings /> :
-                        selected === 'ajuda' ?
+                        selected === 'sobre' ?
                             <About /> :
                         selected === 'alunos' ?
                             <Studants /> :
