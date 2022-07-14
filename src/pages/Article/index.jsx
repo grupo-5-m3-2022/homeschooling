@@ -49,7 +49,7 @@ export default function Article() {
                                 }
                             }
                         }
-                        else {
+                        else if (user?.position.toLowerCase() === 'estudante' && user?.email === lesson.studentEmail) {
                             tempLessons.push(lesson)
                         }
                     }
