@@ -1,16 +1,24 @@
 import styled from "styled-components";
 
+export const ModalBackground = styled.div`
+    height: 100vh;
+    width: 100vw;
+    background-color: rgba(255, 255, 255, 0.75);
+    position: fixed;
+    inset: 0;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: ${props => props.modalAnimation === 'hideUp' ? "0" : "1"};
+    animation: ${props => props.modalAnimation} 400ms;
+`
+
 export const Container = styled.div`
-     display: flex;
+    display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    margin: auto;
     padding: 0 10px;
     width: 100%;
     max-width: 350px;
@@ -18,7 +26,6 @@ export const Container = styled.div`
     background-color: white;
     border: 1px solid black;
     border-radius: 8px;
-    animation: appearUp 400ms;
 
     form{
         width: 100%;

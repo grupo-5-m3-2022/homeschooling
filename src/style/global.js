@@ -94,4 +94,15 @@ export const GlobalStyle = createGlobalStyle`
             transform: translateY(0);
         }
     }
+
+    @keyframes hideUp {
+        0% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(-100%);
+        }
+    }
 `;

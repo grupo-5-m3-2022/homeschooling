@@ -1,12 +1,13 @@
 import { useParams, useHistory, useLocation } from "react-router-dom";
 import { RiArrowLeftSLine } from "react-icons/ri"
-import { DashboardContainer } from "../dashboard/styles";
+import { DashboardContainer } from "../Dashboard/styles";
 import { useDashboardStates, useUserStates } from "../../components/Providers";
 import { ArticleContent } from "./styles";
 import { useEffect, useState } from "react";
 import material from "../../services/material";
 import Header from "../../components/Header";
 import SideBar from "../../components/SideBar";
+import api from "../../services/api";
 
 export default function Article() {
     const history = useHistory()
@@ -15,6 +16,7 @@ export default function Article() {
     const { verifyUser, user } = useUserStates()
     const { search } = useLocation()
     const queryYear = new URLSearchParams(search).get('ano')
+    const extra = new URLSearchParams(search).get('extra')
     const [selectedMaterial, setSelectedMaterial] = useState({})
 
     useEffect(() => {
@@ -22,19 +24,72 @@ export default function Article() {
             let res = await verifyUser()
             if(!res) {
                 history.push("/")
-            }
-
-            if (user.position.toLowerCase() === 'estudante') {
-                setSelectedMaterial(material.filter(({ano}) => ano === user?.ano)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
-            }
-            else if (user.position.toLowerCase().includes('professor')) {
-                setSelectedMaterial(material.filter(({ano}) => ano === queryYear)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
-            }
+            } 
         }
 
         asyncVerifyUser()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        if (user?.position?.toLowerCase() === 'estudante') {
+            if (extra) {
+                api.get("extra_lessons", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("@token")}`
+                    }
+                })
+                .then(response => {
+                    const tempLessons = []
+                    for (const lesson of response.data) {
+                        if (user?.position.toLowerCase().includes('professor')) {
+                            for (const student of user.alunos) {
+                                if (lesson.studentEmail === student.studentEmail) {
+                                    tempLessons.push(lesson)
+                                }
+                            }
+                        }
+                        else if (user?.position.toLowerCase() === 'estudante' && user?.email === lesson.studentEmail) {
+                            tempLessons.push(lesson)
+                        }
+                    }
+                    setSelectedMaterial(tempLessons[article])
+                })
+            }
+            else {
+                setSelectedMaterial(material.filter(({ano}) => ano === user?.ano)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
+            }
+        }
+        else if (user?.position?.toLowerCase().includes('professor')) {
+            if (extra) {
+                api.get("extra_lessons", {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("@token")}`
+                    }
+                })
+                .then(response => {
+                    const tempLessons = []
+                    for (const lesson of response.data) {
+                        if (user?.position.toLowerCase().includes('professor')) {
+                            for (const student of user.alunos) {
+                                if (lesson.studentEmail === student.studentEmail) {
+                                    tempLessons.push(lesson)
+                                }
+                            }
+                        }
+                        else {
+                            tempLessons.push(lesson)
+                        }
+                    }
+                    setSelectedMaterial(tempLessons[article])
+                })
+            }
+            else {
+                setSelectedMaterial(material.filter(({ano}) => ano === queryYear)[0].bimesters[bimester - 1].subejects[0][subject[0].toUpperCase() + subject.slice(1)][article])
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user])
 
     return (
         <DashboardContainer>
@@ -51,20 +106,22 @@ export default function Article() {
                         </div>
                         <div className="article-navegation">
                             {
-                                user?.position?.toLowerCase() === 'estudante' ?
-                                    <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>
-                                        <RiArrowLeftSLine />
-                                        Voltar
-                                    </button> :
-                                user?.position?.toLowerCase().includes('professor') ?
+                                (user?.position?.toLowerCase().includes('professor') || extra) ?
                                     <button onClick={() => {setSelected("aulas"); history.push(`/dashboard`)}}>
                                         <RiArrowLeftSLine />
                                         Voltar
                                     </button> :
-                                    null
+                                    <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>
+                                        <RiArrowLeftSLine />
+                                        Voltar
+                                    </button>
                             }
-                            <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>{subject}</button>
-                            <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>Bimestre {bimester}</button>
+                            {
+                                (user?.position?.toLowerCase().includes('professor') || extra) ? null : <>
+                                    <button onClick={() => {setSelected("aulas"); history.push("/dashboard")}}>{subject}</button>
+                                    <button onClick={() => {setSelected("bimestres"); history.push(`/dashboard/${subject}/${bimester}`)}}>Bimestre {bimester}</button>
+                                </>
+                            }
                             <button>Artigo {Number(article) + 1}</button>
                         </div>
                         <div className="article-content">

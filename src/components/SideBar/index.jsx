@@ -20,13 +20,13 @@ export default function SideBar({asideFunctions, preset}) {
     if (preset?.toLowerCase() === 'estudante') {
         asideFunctions = [
             ["Painel de controle", [[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
-            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
+            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Sobre"]]]
         ]
     }
     else if (preset?.toLowerCase().includes("professor")) {
         asideFunctions = [
             ["Painel de controle", [[BsFillPeopleFill, "Alunos"],[FiClipboard, 'Aulas'], [HiCubeTransparent, 'Desempenho']]],
-            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Ajuda"]]]
+            ["Suporte", [[FiSettings, "Configurações"], [AiOutlineInfoCircle, "Sobre"]]]
         ]
     }
 
@@ -48,7 +48,7 @@ export default function SideBar({asideFunctions, preset}) {
                                 </li>
                                 {
                                     abas?.map(([Icon, name], index) => (
-                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
+                                        <AsideFunction key={index} onClick={() => {setSelected(name.toLowerCase()); setAnimation('hide'); history.push("/dashboard")}} selected={selected === name.toLowerCase()}>
                                             {
                                                 Icon && <Icon />}
                                             {name}

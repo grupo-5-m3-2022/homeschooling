@@ -13,7 +13,7 @@ export default function SignUp() {
     const schema = yup.object().shape({
         name: yup.string().required('Campo obrigatório').min(2, 'Mínimo de 2 caractéres'),
         email: yup.string().email('Email inválido').required('Campo obrigatório'),
-        password: yup.string().required('Campo obrigatório').min(6, 'Mínimo de 6 caractéres'),
+        password: yup.string().required('Campo obrigatório').min(6, 'Mínimo de 6 caractéres').matches(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/, "Senha deve ter letra maiúscula, minúscula, número e símbolo"),
         confirmPassword: yup.string().oneOf([yup.ref("password")], 'Senhas não combinam').required('Campo obrigatório'),
         position: yup.string().required('Campo obrigatório'),
         ano: yup.string()

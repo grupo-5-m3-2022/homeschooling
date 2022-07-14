@@ -62,7 +62,7 @@ export default function Providers({children}) {
                         }
                     })
                     .then(response => {
-                        const alunos = response.data[0].students
+                        const alunos = response.data.length > 0 ? response.data[0].students : response.data
                         setUser({email, name, position, id, alunos, logged: true})
                     })
                 }
@@ -79,6 +79,7 @@ export default function Providers({children}) {
 
     function logOut() {
         localStorage.clear()
+        setUser({})
         history.push('/')
     }
     

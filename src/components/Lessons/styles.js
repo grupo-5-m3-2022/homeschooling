@@ -80,6 +80,7 @@ export const LessonsContentDiv = styled.div`
         gap: 5px;
         width: 230px;
         border-radius: 10px;
+        animation: appearRight 500ms;
         cursor: pointer;
 
         svg {
